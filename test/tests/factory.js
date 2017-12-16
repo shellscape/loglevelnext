@@ -76,4 +76,21 @@ describe('MethodFactory', () => {
       assert.equal(calls[index].args[0], method);
     }
   });
+
+  it('sets the factory and calls make()', () => {
+    const newFactory = new MethodFactory(log);
+
+    sandbox.spy(newFactory, 'make');
+    log.factory = newFactory;
+
+    assert.deepEqual(log.factory, newFactory);
+    assert.equal(newFactory.make.callCount, factory.levels.INFO + 1);
+
+    const calls = factory.make.getCalls();
+    const checkMethods = factory.methods.slice(factory.levels.INFO);
+
+    for (const [index, method] of checkMethods.entries()) {
+      assert.equal(calls[index].args[0], method);
+    }
+  });
 });
