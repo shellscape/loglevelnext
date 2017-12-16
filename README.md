@@ -82,5 +82,5 @@ Base Log SVG by [Freepik](http://www.freepik.com/) from [www.flaticon.com](http:
 [loglevel]: https://githhub.com/pimterry/loglevel
 [loglevelpre]: https://github.com/kutuluk/loglevel-plugin-prefix
 [oldie]: https://www.microsoft.com/en-us/windowsforbusiness/end-of-ie-support
-[methodFactory]: ./blob/master/lib/MethodFactory.js
-[prefixFactory]: ./blob/master/factory/PrefixFactory.js
+[methodFactory]: lib/MethodFactory.js
+[prefixFactory]: factory/PrefixFactory.js
