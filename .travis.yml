@@ -7,5 +7,9 @@ node_js:
   - '8'
   - '6'
 
-# script:
-  # npm run ci
+script:
+  npm run ci
+
+after_success:
+  - cat ./coverage/coverage.json | node_modules/codecov.io/bin/codecov.io.js
+  - rm -rf ./coverage
