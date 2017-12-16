@@ -6,7 +6,6 @@
 
 [![npm][npm]][npm-url]
 [![node][node]][node-url]
-[![deps][deps]][deps-url]
 [![devdeps][devdeps]][devdeps-url]
 [![tests][tests]][tests-url]
 [![coverage][cover]][cover-url]
@@ -14,7 +13,7 @@
 # loglevelnext
 
 `loglevelnext` is a modern logging library for Node.js and modern browsers,
-written with modern patterns and practices, that provides log level mapping the
+written with modern patterns and practices which provides log level mapping of the
 `console` object.
 
 ## Work In Progress
@@ -26,7 +25,7 @@ This project has not been published and is under development.
 If you're used to using plugins with `loglevel`, fear not. The same capabilities
 are available in `loglevelnext`, but in a much more straightforward and structured
 way. `loglevelnext` supports by way of "Factories." A `Factory` is nothing more
-than a class which defines several base methods which operate on the `console`
+than a class which defines several base methods that operate on the `console`
 and provide functionality to a `LogLevel` instance. All factories must inherit from the
 [`MethodFactory`][methodFactory] class, and may override any defined class functions.
 
@@ -34,6 +33,14 @@ For an example factory, please have a look at the [`PrefixFactory`][prefixFactor
 which provides similar functionality as the [loglevel-prefix](loglevelpre) plugin,
 and is the factory which is used when a user passes the `prefix` option to a
 `LogLevel` instance.
+
+## Persisting the Level
+
+Persisting the level of a log between sessions in a browser isn't the job of a
+logging library. Primarily because working with `localStorage` these days is a
+breeze. If you need to store and retrieve a log level value between sessions,
+please look into leveraging the excellent and very tiny [`store2`](https://github.com/nbubna/store)
+library.
 
 ## Browser Support
 

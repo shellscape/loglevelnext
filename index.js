@@ -1,7 +1,6 @@
 'use strict';
 
 /* global window: true */
-
 const LogLevel = require('./lib/LogLevel');
 
 const defaultLogger = new LogLevel({ name: 'default' });

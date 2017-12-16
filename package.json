@@ -46,7 +46,6 @@
     "warn"
   ],
   "dependencies": {
-    "store2": "^2.5.9"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0-beta.35",
