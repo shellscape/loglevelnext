@@ -2,6 +2,7 @@
 <div align="center">
   <img width="150" height="150" src="http://shellscape.org/assets/images/external/loglevelnext-icon.svg">
 </div>
+&nbsp;  
 
 [![npm][npm]][npm-url]
 [![node][node]][node-url]
