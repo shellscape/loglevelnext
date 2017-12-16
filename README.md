@@ -3,6 +3,12 @@
   <img width="150" height="150" src="http://shellscape.org/assets/images/external/loglevelnext-icon.svg">
 </div>
 
+[![npm][npm]][npm-url]
+[![node][node]][node-url]
+[![deps][deps]][deps-url]
+[![tests][tests]][tests-url]
+[![coverage][cover]][cover-url]
+
 # loglevelnext
 
 `loglevelnext` is a modern logging library for Node.js and modern browsers,
@@ -40,19 +46,19 @@ Base Log SVG by [Freepik](http://www.freepik.com/) from [www.flaticon.com](http:
 #### [MIT](./LICENSE)
 
 
-[npm]: https://img.shields.io/npm/v/webpack-dev-server.svg
-[npm-url]: https://npmjs.com/package/webpack-dev-server
+[npm]: https://img.shields.io/npm/v/loglevelnext.svg
+[npm-url]: https://npmjs.com/package/loglevelnext
 
-[node]: https://img.shields.io/node/v/webpack-dev-server.svg
+[node]: https://img.shields.io/node/v/loglevelnext.svg
 [node-url]: https://nodejs.org
 
-[deps]: https://david-dm.org/webpack/webpack-dev-server.svg
-[deps-url]: https://david-dm.org/webpack/webpack-dev-server
+[deps]: https://david-dm.org/shellscape/loglevelnext.svg
+[deps-url]: https://david-dm.org/shellscape/loglevelnext
 
-[tests]: http://img.shields.io/travis/webpack/webpack-dev-server.svg
-[tests-url]: https://travis-ci.org/webpack/webpack-dev-server
+[tests]: http://img.shields.io/travis/shellscape/loglevelnext.svg
+[tests-url]: https://travis-ci.org/shellscape/loglevelnext
 
-[cover]: https://codecov.io/gh/webpack/webpack-dev-server/branch/master/graph/badge.svg
-[cover-url]: https://codecov.io/gh/webpack/webpack-dev-server
+[cover]: https://codecov.io/gh/shellscape/loglevelnext/branch/master/graph/badge.svg
+[cover-url]: https://codecov.io/gh/shellscape/loglevelnext
 
 [loglevel]: https://githhub.com/pimterry/loglevel
