@@ -13,14 +13,19 @@ describe('Levels', () => {
 
   before(() => {
     for (const method of spyMethods) {
-      sandbox.spy(console, method);
+      if (console[method]) {
+        // curiously, node 6 doesn't have console.debug
+        sandbox.spy(console, method);
+      }
     }
     sandbox.spy(console, 'log');
   });
 
   afterEach(() => {
     for (const method of spyMethods) {
-      console[method].reset();
+      if (console[method]) {
+        console[method].reset();
+      }
     }
     console.log.reset();
   });
