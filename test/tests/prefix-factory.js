@@ -33,6 +33,10 @@ describe('PrefixFactory', () => {
     assert(factory instanceof PrefixFactory);
   });
 
+  it('gets the name from the base logger', () => {
+    assert.equal(factory.options.name({ logger: log }), 'test');
+  });
+
   it('prefixes output', () => {
     log.info('foo');
 
@@ -46,7 +50,7 @@ describe('PrefixFactory', () => {
     const options = {
       level: opts => `[${opts.level.substring(1)}]`,
       name: opts => opts.logger.name.toUpperCase(),
-      template: '{{time}} {{level}} ({{name}})-',
+      template: '{{time}} {{level}} ({{name}}) {{nope}}-',
       time: () => `[${new Date().getHours()}]`
     };
     const customPrefix = new PrefixFactory(log, options);
@@ -56,11 +60,11 @@ describe('PrefixFactory', () => {
 
     const [first] = console.info.firstCall.args;
     const terped = customPrefix.interpolate('info');
-    const rOutput = /\[\d{2}\]\s\[nfo\]\s\(TEST\)-/;
+    const rOutput = /\[\d{2}\]\s\[nfo\]\s\(TEST\)\s\{\{nope\}\}-/;
 
     assert(rOutput.test(terped));
     assert.equal(console.info.callCount, 1);
-    assert(/\[\d{2}\]\s\[nfo\]\s\(TEST\)-foo/.test(first));
+    assert(/\[\d{2}\]\s\[nfo\]\s\(TEST\)\s\{\{nope\}\}-foo/.test(first));
 
     // test the first argument when passing a non-string
     log.info({});
