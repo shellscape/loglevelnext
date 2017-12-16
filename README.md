@@ -52,7 +52,7 @@ Base Log SVG by [Freepik](http://www.freepik.com/) from [www.flaticon.com](http:
 [node]: https://img.shields.io/node/v/loglevelnext.svg
 [node-url]: https://nodejs.org
 
-[deps]: https://david-dm.org/shellscape/loglevelnext.svg
+[deps]: https://david-dm.org/shellscape/loglevelnext/dev-status.svg
 [deps-url]: https://david-dm.org/shellscape/loglevelnext
 
 [tests]: http://img.shields.io/travis/shellscape/loglevelnext.svg
