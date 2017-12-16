@@ -1,0 +1,64 @@
+{
+  "name": "loglevelnext",
+  "version": "1.0.0",
+  "description": "A modern logging library for Node.js and modern browsers that provides log level mapping to the console",
+  "license": "MIT",
+  "repository": "/shellscape/loglevelinext",
+  "author": "Andrew Powell <andrew@shellscape.org>",
+  "homepage": "https://github.com/shellscape/loglevelnext",
+  "main": "index.js",
+  "engines": {
+    "node": ">= 6"
+  },
+  "scripts": {
+    "build": "npm run build:dev && npm run build:prod",
+    "build:dev": "NODE_ENV=development webpack index.js",
+    "build:prod": "NODE_ENV=production webpack index.js",
+    "ci": "echo 'ci'",
+    "lint": "eslint index.js lib test",
+    "test": "npm run test:browser && npm run test:node",
+    "test:browser": "echo 'browser test'",
+    "test:node": "mocha --full-trace --check-leaks"
+  },
+  "files": [
+    "dist/",
+    "lib/",
+    "index.js"
+  ],
+  "keywords": [
+    "browser",
+    "console",
+    "debug",
+    "error",
+    "level",
+    "levels",
+    "log",
+    "logger",
+    "logging",
+    "loglevel",
+    "persist",
+    "persistent",
+    "plugins",
+    "prefix",
+    "trace",
+    "warn"
+  ],
+  "dependencies": {},
+  "devDependencies": {
+    "@babel/core": "^7.0.0-beta.35",
+    "@babel/preset-env": "^7.0.0-beta.35",
+    "assert": "^1.4.1",
+    "babel": "^6.23.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-es2015": "^6.24.1",
+    "chalk": "^2.3.0",
+    "eslint": "^4.13.1",
+    "eslint-config-webpack": "^1.2.5",
+    "eslint-plugin-import": "^2.8.0",
+    "mocha": "^4.0.1",
+    "mocha-chrome": "^1.0.2",
+    "sinon": "^4.1.3",
+    "webpack": "^4.0.0-alpha.1",
+    "webpack-cli": "^1.5.2"
+  }
+}
