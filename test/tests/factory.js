@@ -29,11 +29,6 @@ describe('MethodFactory', () => {
 
   before(() => {
     sandbox.spy(factory, 'make');
-    log = new LogLevel({
-      name: 'test',
-      level: 'trace',
-      factory
-    });
   });
 
   after(() => {
@@ -48,7 +43,21 @@ describe('MethodFactory', () => {
     assert.deepEqual(factory.methods, methods);
   });
 
+  it('throws on replaceMethods() with invalid level', () => {
+    assert.throws(() => { factory.replaceMethods(null); });
+  });
+
+  it('throws on replaceMethods() with no logger defined', () => {
+    assert.throws(() => { factory.replaceMethods(0); });
+  });
+
   it('equals the log factory', () => {
+    log = new LogLevel({
+      name: 'test',
+      level: 'trace',
+      factory
+    });
+
     assert.deepEqual(log.factory, factory);
   });
 

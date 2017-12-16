@@ -78,6 +78,11 @@ describe('Levels', () => {
     assert.equal(log.level, log.levels.SILENT);
   });
 
+  it('enable() sets TRACE', () => {
+    log.enable();
+    assert.equal(log.level, log.levels.TRACE);
+  });
+
   it('throws on invalid levels', () => {
     assert.throws(() => { log.level = null; });
     assert.throws(() => { log.level = undefined; }); // eslint-disable-line no-undefined

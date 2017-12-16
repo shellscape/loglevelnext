@@ -55,9 +55,18 @@ describe('PrefixFactory', () => {
     log.info('foo');
 
     const [first] = console.info.firstCall.args;
+    const terped = customPrefix.interpolate('info');
+    const rOutput = /\[\d{2}\]\s\[nfo\]\s\(TEST\)-/;
 
+    assert(rOutput.test(terped));
     assert.equal(console.info.callCount, 1);
     assert(/\[\d{2}\]\s\[nfo\]\s\(TEST\)-foo/.test(first));
+
+    // test the first argument when passing a non-string
+    log.info({});
+
+    const [last] = console.info.lastCall.args;
+    assert(rOutput.test(last));
   });
 
   it('supports different prefixes per logger', () => {
