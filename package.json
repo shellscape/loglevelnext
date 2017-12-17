@@ -15,10 +15,11 @@
     "build:dev": "NODE_ENV=development webpack index.js",
     "build:prod": "NODE_ENV=production webpack index.js",
     "ci": "npm run cover -- --report lcovonly && npm run lint && npm run test",
+    "check-node": "check-node-version --node 9",
     "cover": "istanbul cover node_modules/mocha/bin/_mocha",
     "lint": "eslint index.js lib test",
     "test": "npm run test:node && npm run test:browser",
-    "test:browser": "if check-node-version --node >= 9; then mocha-chrome test/tests/browser/entry.html; else echo 'Skipping Browser Test'; fi",
+    "test:browser": "if npm run check-node; then mocha-chrome test/tests/browser/entry.html; else echo 'Skipping Browser Test'; fi",
     "test:node": "mocha --full-trace --check-leaks"
   },
   "files": [

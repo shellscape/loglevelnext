@@ -62,4 +62,9 @@ describe('Default Logger API', () => {
     assert.equal(log.level, 5);
     assert.equal(child.level, 3);
   });
+
+  it('confirm noConflict() does bubkis on node', () => {
+    const logger = log.noConflict();
+    assert.deepEqual(logger, log);
+  });
 });
