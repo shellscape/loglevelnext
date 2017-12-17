@@ -9,6 +9,7 @@ module.exports = {
   output: {
     filename: `loglevel${dev ? '' : '.min'}.js`,
     path: path.resolve(__dirname, 'dist'),
+    library: 'log',
     libraryTarget: 'umd'
   },
   module: {

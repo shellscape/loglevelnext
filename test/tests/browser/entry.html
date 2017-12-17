@@ -1,0 +1,22 @@
+<!doctype>
+<html>
+  <head>
+    <title>LogLevel Browser Tests</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="../../../node_modules/mocha/mocha.css" />
+    <script src="./assert.js"></script>
+    <script src="../../../node_modules/mocha/mocha.js"></script>
+    <script src="../../../node_modules/sinon/pkg/sinon.js"></script>
+  </head>
+  <body>
+    <div id="mocha"></div>
+    <script>
+      mocha.setup('bdd');
+      window.log = 'placeholder';
+    </script>
+    <script src="../../../dist/loglevel.js"></script>
+    <script src="./browser.js"></script>
+    <script>mocha.run();</script>
+    </script>
+  </body>
+</html>

@@ -1,2 +1,3 @@
 dist
 test/old
+test/tests/browser/assert.js

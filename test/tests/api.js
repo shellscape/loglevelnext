@@ -3,12 +3,20 @@
 const assert = require('assert');
 const log = require('../../');
 const LogLevel = require('../../lib/LogLevel');
+const MethodFactory = require('../../lib/MethodFactory');
+const PrefixFactory = require('../../factory/PrefixFactory');
 
 describe('Default Logger API', () => {
   it('has extended methods', () => {
     assert.equal(typeof log.loggers, 'object');
     assert.equal(typeof log.getLogger, 'function');
     assert.equal(typeof log.noConflict, 'function');
+  });
+
+  it('returns factories', () => {
+    assert(log.factories);
+    assert.deepEqual(log.factories.MethodFactory, MethodFactory);
+    assert.deepEqual(log.factories.PrefixFactory, PrefixFactory);
   });
 
   it('returns loggers cache', () => {
