@@ -51,7 +51,7 @@ describe('PrefixFactory', () => {
       level: opts => `[${opts.level.substring(1)}]`,
       name: opts => opts.logger.name.toUpperCase(),
       template: '{{time}} {{level}} ({{name}}) {{nope}}-',
-      time: () => `[${new Date().getHours()}]`
+      time: () => `[${new Date().toTimeString().split(' ')[0].split(':')[0]}]`
     };
     const customPrefix = new PrefixFactory(log, options);
 
