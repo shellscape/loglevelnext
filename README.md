@@ -16,9 +16,116 @@
 written with modern patterns and practices which provides log level mapping of the
 `console` object.
 
-## Work In Progress
+## Getting Started
 
-This project has not been published and is under development.
+First thing's first, install the module:
+
+```console
+npm install loglevelnext --save
+```
+
+## Usage
+
+Users can choose to use `loglevelnext` in Node.js or in the client (browser).
+
+```js
+// Node.js
+const log = require('loglevel');
+
+log.info('bananas!');
+```
+
+```html
+<!-- browser -->
+<!doctype>
+<html>
+  <head>
+    <script src="/path/to/loglevelnext.js"></script>
+  </head>
+  <body>
+    <script>
+      window.log.info('zomg');
+    </script>
+  </body>
+</html>
+
+```
+
+## Log Levels
+
+By default `loglevelnext` ships supporting the following log level name-value
+pairs:
+
+```js
+{
+  TRACE: 0,
+  DEBUG: 1,
+  INFO: 2,
+  WARN: 3,
+  ERROR: 4,
+  SILENT: 5
+}
+```
+
+## Default Logger
+
+When requiring `loglevelnext` in Node.js the default export will be an instance
+of [`LogLevel`](docs/LogLevel.md) wrapped with some extra sugar.
+
+When loading the `loglevelnext.js` script in the client (browser), the script
+will assign `window.log` to an instance of [`LogLevel`](docs/LogLevel.md),
+wrapped with that same extra sugar.
+
+### Methods
+
+DOC LOG.INFO ETC AND LOG.LEVEL
+
+Please see [`LogLevel`](docs/LogLevel.md) for documentation of all methods and
+properties of every log instance, including the default instance.
+
+### `trace`, `debug`, `info`, `warn`, `error`
+
+These methods correspond to the available log levels and accept parameters
+identical to their `console` counterparts. eg.
+
+```js
+console.info('...');
+console.info('...');
+// ... etc
+```
+
+### `getLogger(options)`
+
+Returns a new `LogLevel` instance. The `options` parameter should be an `Object`
+matching the options for the [`LogLevel`](docs/LogLevel.md) constructor.
+
+### `noConflict()`
+
+When using `loglevelnext` in a browser environment, you may encounter a scenario
+in which `window.log` is already assigned when the script loads, resulting in
+`window.log` being reassigned to `loglevelnext`. This method will restore
+`window.log` to it's original value and return the default logger.
+
+### Properties
+
+### `factories`
+
+Type: `Array [ Class ]`
+
+Gets an `Array` containing the factory classes available within `loglevelnext`
+to outside modules. Particularily useful when creating plugins. eg.
+
+```js
+const log = require('loglevelnext');
+const { MethodFactory } = log.factories;
+class MyFactory extends MethodFactory { ... }
+```
+
+### `loggers`
+
+Type: `Array [ LogLevel ]`
+
+Gets an `Array` containing references to the currently instantiated loggers.
 
 ## Factories aka Plugins
 
@@ -56,6 +163,10 @@ _Note: This library's distribution file is compiled in a way that will
 technically work all the way back to IE8 - as that version and above support
 `localStorage`. However, IE8 and IE9 require that the developer tools be open
 prior to invoking this library._
+
+## Contributing
+
+We welcome your contributions! Please have a read of [CONTRIBUTING.md](CONTRIBUTING.md) for more information on how to get involved.
 
 ## Attribution
 

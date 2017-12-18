@@ -7,7 +7,7 @@ const dev = process.env.NODE_ENV === 'development';
 module.exports = {
   mode: dev ? 'development' : 'production',
   output: {
-    filename: `loglevel${dev ? '' : '.min'}.js`,
+    filename: `loglevelnext${dev ? '' : '.min'}.js`,
     path: path.resolve(__dirname, 'dist'),
     library: 'log',
     libraryTarget: 'umd'
