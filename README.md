@@ -78,8 +78,6 @@ wrapped with that same extra sugar.
 
 ### Methods
 
-DOC LOG.INFO ETC AND LOG.LEVEL
-
 Please see [`LogLevel`](docs/LogLevel.md) for documentation of all methods and
 properties of every log instance, including the default instance.
 
