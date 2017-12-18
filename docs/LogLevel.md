@@ -21,7 +21,7 @@ pairs:
 
 ## Methods
 
-## constructor(options)
+### `constructor(options)`
 
 The constructor for this class accepts an `options` Object. The following is a
 property reference for the Object:
@@ -74,17 +74,17 @@ disable() {
   this.level = this.levels.SILENT;
 }
 
-## `disable`
+### `disable`
 
 Instructs the logger to hide output for every log level. This is equivalent
 to setting the `level` property to `'silent'` or `5`.
 
-## `enable`
+### `enable`
 
 Instructs the logger to produce output for every log level. This is equivalent
 to setting the `level` property to `'trace'` or `0`.
 
-## Properties
+### Properties
 
 #### `level(options)`
 
@@ -130,7 +130,7 @@ For example:
 Would then result in a prefix of `'bar-'` prepended to the output for each log
 method call.
 
-#### `time()`
+### `time()`
 
 Type: `Function`
 Default: `() => new Date().toTimeString().split(' ')[0]`
@@ -139,23 +139,23 @@ A function used to define the value used to replace instances of
 `{{time}}` within the [prefix template](#template). This function should
 represent the time at which the logger produced output.
 
-## Properties
+### Properties
 
-### `factory`
+#### `factory`
 
 Type: `Class:MethodFactory`
 
 Gets or sets the factory to use when wrapping `console` methods. When setting
 this property, the value must be a class which inherits from `MethodFactory`.
 
-### `level`
+#### `level`
 
 Type: `String|Number`
 
 Gets or sets the level the log should operate on. When setting this property, the
 value must be a `String` or `Number.`
 
-## `levels`
+#### `levels`
 
 Type: `Object`
 

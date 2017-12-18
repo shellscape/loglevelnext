@@ -81,7 +81,7 @@ wrapped with that same extra sugar.
 Please see [`LogLevel`](docs/LogLevel.md) for documentation of all methods and
 properties of every log instance, including the default instance.
 
-### `trace`, `debug`, `info`, `warn`, `error`
+#### `trace`, `debug`, `info`, `warn`, `error`
 
 These methods correspond to the available log levels and accept parameters
 identical to their `console` counterparts. eg.
@@ -92,12 +92,12 @@ console.info('...');
 // ... etc
 ```
 
-### `getLogger(options)`
+#### `getLogger(options)`
 
 Returns a new `LogLevel` instance. The `options` parameter should be an `Object`
 matching the options for the [`LogLevel`](docs/LogLevel.md) constructor.
 
-### `noConflict()`
+#### `noConflict()`
 
 When using `loglevelnext` in a browser environment, you may encounter a scenario
 in which `window.log` is already assigned when the script loads, resulting in
@@ -106,7 +106,7 @@ in which `window.log` is already assigned when the script loads, resulting in
 
 ### Properties
 
-### `factories`
+#### `factories`
 
 Type: `Array [ Class ]`
 
@@ -119,7 +119,7 @@ const { MethodFactory } = log.factories;
 class MyFactory extends MethodFactory { ... }
 ```
 
-### `loggers`
+#### `loggers`
 
 Type: `Array [ LogLevel ]`
 

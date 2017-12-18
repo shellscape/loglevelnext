@@ -5,7 +5,7 @@ responsible for wrapping `console` methods to provide logging functionality.
 
 ## Methods
 
-## `bindMethod(obj, methodName)`
+### `bindMethod(obj, methodName)`
 
 Binds a corresponding `console` method to the object specified.
 
@@ -13,17 +13,15 @@ Returns: `Function`
 
 ### Parameters
 
-### `obj`
+#### `obj`
 
 Type: `Object`
 
-### `methodName`
+#### `methodName`
 
 Type: `String`
 
-### Parameters
-
-## `distillLevel(level)`
+### `distillLevel(level)`
 
 Processes a valid level value and returns the numerical value.
 
@@ -31,13 +29,13 @@ Returns: `Number`
 
 ### Parameters
 
-### `level`
+#### `level`
 
 Type: `Any`
 
 The level to process.
 
-## `levelValid(level)`
+### `levelValid(level)`
 
 Determines if a given log level corresponds to a name or value in `levels`.
 
@@ -45,21 +43,19 @@ Returns: `Boolean`
 
 ### Parameters
 
-### `level`
+#### `level`
 
 Type: `Any`
 
 The level to check.
 
-### Parameters
-
-## `make(methodName)`
+### `make(methodName)`
 
 Contains logic for binding the specified method and adding it to the logger.
 
 ### Parameters
 
-### `methodName`
+#### `methodName`
 
 Type: `String`
 
@@ -70,15 +66,15 @@ The method to create.
 The entry point for `LogLevel` instances to request binding and wrapping of log
 methods.
 
-### Properties
+### Parameters
 
-### `logLevel`
+#### `logLevel`
 Type: `String|Number`
 
 Specifies the minimum level that will produce log output. The value must be a
 `String` or `Number.`
 
-## `levels`
+### `levels`
 
 Type: `Object`
 
@@ -86,13 +82,13 @@ Gets an object which represents the valid level name-value pairs for this log
 instance. The return value will match the same property in
 [`LogLevel`](LogLevel.md).
 
-## `logger`
+### `logger`
 
 Type: `LogLevel`
 
 Gets or sets the logger that the factory will operate on.
 
-## `methods`
+### `methods`
 
 Type: `Array [ String ]`
 
