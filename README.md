@@ -95,9 +95,12 @@ console.info('...');
 #### `getLogger(options)`
 
 Returns a new `LogLevel` instance. The `options` parameter should be an `Object`
-matching the options for the [`LogLevel`](docs/LogLevel.md) constructor. Note
-that the logger returned is cached, and subsequent requests for a logger of
-the same name will return the same logger instance.
+matching the options for the [`LogLevel`](docs/LogLevel.md) constructor.
+
+_Note: the logger returned is cached, and subsequent requests for a logger of
+the same name will return the same logger instance. If you require multiple
+unique loggers of the same name, pass an `id` property with a unique identifier
+and `getLogger` will use that over the `name`._
 
 #### `noConflict()`
 

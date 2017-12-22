@@ -41,6 +41,13 @@ describe('Default Logger API', () => {
     assert.deepEqual(child1, child2);
   });
 
+  it('getLogger() returns different instances', () => {
+    const child1 = log.getLogger({ name: 'newer', id: +new Date() });
+    const child2 = log.getLogger({ name: 'newer', id: +new Date() + 1 });
+
+    assert.notDeepEqual(child1, child2);
+  });
+
   it('getLogger() throws if called with no name / empty name', () => {
     assert.throws(() => { log.getLogger(); });
     assert.throws(() => { log.getLogger(''); });

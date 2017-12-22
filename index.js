@@ -29,17 +29,21 @@ module.exports = Object.assign(defaultLogger, {
       options = { name: options };
     }
 
-    const { name } = options;
+    if (!options.id) {
+      options.id = options.name;
+    }
+
+    const { name, id } = options;
     const defaults = { level: defaultLogger.level };
 
     if (typeof name !== 'string' || !name || !name.length) {
       throw new TypeError('You must supply a name when creating a logger.');
     }
 
-    let logger = cache[name];
+    let logger = cache[id];
     if (!logger) {
       logger = new LogLevel(Object.assign({}, defaults, options));
-      cache[name] = logger;
+      cache[id] = logger;
     }
     return logger;
   },

@@ -34,6 +34,18 @@ Default: `null`
 Specifies the factory to use when wrapping `console` methods. The value must be
 a class which inherits from `MethodFactory`.
 
+### `id`
+
+Type: `String|Any`
+
+By default, the identifier for a logger is set internally and equal to the
+specified logger name. The caching of the loggers works off of this property.
+_However_, in some environments or scenarios it may be preferable for no caching
+of loggers, resulting in each logger requested being a separate instance.
+
+_If you require multiple unique loggers of the same name, set this `id`
+property to a unique identifier._
+
 ### `level`
 
 Type: `String`
