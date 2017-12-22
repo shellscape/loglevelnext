@@ -28,7 +28,7 @@ property reference for the Object:
 
 ### `factory`
 
-Type: `Class:MethodFactory`
+Type: `Class:MethodFactory`  
 Default: `null`
 
 Specifies the factory to use when wrapping `console` methods. The value must be
@@ -48,7 +48,7 @@ property to a unique identifier._
 
 ### `level`
 
-Type: `String`
+Type: `String`  
 Default: `'info'`
 
 Specifies the level the logger should use. A logger will not produce output for
@@ -70,7 +70,7 @@ with the notable exception of the `silent` level._
 
 ### `name`
 
-Type: `String`
+Type: `String`  
 Default: `+new Date()`
 
 Specifies the name of the log to create. This property is required, and used to
@@ -100,7 +100,7 @@ to setting the `level` property to `'trace'` or `0`.
 
 #### `level(options)`
 
-Type: `Function`
+Type: `Function`  
 Default: ``options => `[${options.level}]` ``
 
 A function used to define the value used to replace instances of
@@ -110,7 +110,7 @@ function should represent the current level of log producing output.
 
 #### `name(options)`
 
-Type: `Function`
+Type: `Function`  
 Default: ``options => `[${options.name}]` ``
 
 A function used to define the value used to replace instances of
@@ -120,7 +120,7 @@ function should represent the name of the logger producing output.
 
 #### `template`
 
-Type: `String`
+Type: `String`  
 Default: `'{{time}} {{level}} '`
 
 Defines the template that represents the prefix. The template uses
@@ -144,7 +144,7 @@ method call.
 
 ### `time()`
 
-Type: `Function`
+Type: `Function`  
 Default: `() => new Date().toTimeString().split(' ')[0]`
 
 A function used to define the value used to replace instances of

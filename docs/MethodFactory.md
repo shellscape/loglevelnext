@@ -69,6 +69,7 @@ methods.
 ### Parameters
 
 #### `logLevel`
+
 Type: `String|Number`
 
 Specifies the minimum level that will produce log output. The value must be a
