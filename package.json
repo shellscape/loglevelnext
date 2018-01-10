@@ -3,7 +3,7 @@
   "version": "1.0.2",
   "description": "A modern logging library for Node.js and modern browsers that provides log level mapping to the console",
   "license": "MIT",
-  "repository": "shellscape/loglevelinext",
+  "repository": "shellscape/loglevelnext",
   "author": "Andrew Powell <andrew@shellscape.org>",
   "homepage": "https://github.com/shellscape/loglevelnext",
   "main": "index.js",
