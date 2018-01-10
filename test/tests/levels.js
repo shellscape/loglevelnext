@@ -24,10 +24,10 @@ describe('Levels', () => {
   afterEach(() => {
     for (const method of spyMethods) {
       if (console[method]) {
-        console[method].reset();
+        console[method].resetHistory();
       }
     }
-    console.log.reset();
+    console.log.resetHistory();
   });
 
   after(() => {

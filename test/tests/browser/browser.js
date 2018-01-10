@@ -11,7 +11,7 @@ describe('Browser', () => {
   });
 
   afterEach(() => {
-    console.info.reset();
+    console.info.resetHistory();
   });
 
   after(() => {

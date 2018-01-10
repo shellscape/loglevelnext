@@ -22,7 +22,7 @@ describe('PrefixFactory', () => {
   });
 
   afterEach(() => {
-    console.info.reset();
+    console.info.resetHistory();
   });
 
   after(() => {
