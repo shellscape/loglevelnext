@@ -30,7 +30,7 @@ Users can choose to use `loglevelnext` in Node.js or in the client (browser).
 
 ```js
 // Node.js
-const log = require('loglevel');
+const log = require('loglevelnext');
 
 log.info('bananas!');
 ```
