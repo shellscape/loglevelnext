@@ -1,14 +1,16 @@
-sudo: false
+sudo: required
 language: node_js
 node_js:
   - '9'
   - '8'
   - '6'
 
-dist: trusty # Chrome needs Ubuntu Trusty
-
 addons:
   chrome: stable
+
+before_script:
+  - node --version
+  - npm --version
 
 script:
   npm run ci
