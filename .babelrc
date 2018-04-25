@@ -1,4 +1,9 @@
 {
-  "presets": ["es2015"],
-  "plugins": ["transform-object-assign"]
+  "presets": [
+    ["@babel/preset-env", {
+      "targets": {
+        "browsers": ["last 2 versions", "IE 10"]
+      }
+    }]
+  ]
 }

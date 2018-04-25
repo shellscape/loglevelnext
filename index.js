@@ -1,5 +1,7 @@
 'use strict';
 
+require('object.assign/shim')();
+
 /* global window: true */
 const LogLevel = require('./lib/LogLevel');
 const MethodFactory = require('./lib/MethodFactory');
