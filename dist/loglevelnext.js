@@ -100,7 +100,7 @@ eval("\n\nfunction _typeof(obj) { if (typeof Symbol === \"function\" && typeof S
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-eval("\n\n__webpack_require__(/*! object.assign/shim */ \"./node_modules/object.assign/shim.js\")();\n/* global window: true */\n\n\nvar LogLevel = __webpack_require__(/*! ./lib/LogLevel */ \"./lib/LogLevel.js\");\n\nvar MethodFactory = __webpack_require__(/*! ./lib/MethodFactory */ \"./lib/MethodFactory.js\");\n\nvar PrefixFactory = __webpack_require__(/*! ./factory/PrefixFactory */ \"./factory/PrefixFactory.js\");\n\nvar defaultLogger = new LogLevel({\n  name: 'default'\n});\nvar cache = {\n  default: defaultLogger\n}; // Grab the current global log variable in case of overwrite\n\nvar existing = typeof window !== 'undefined' ? window.log : null;\nmodule.exports = Object.assign(defaultLogger, {\n  get factories() {\n    return {\n      MethodFactory: MethodFactory,\n      PrefixFactory: PrefixFactory\n    };\n  },\n\n  get loggers() {\n    return cache;\n  },\n\n  getLogger: function getLogger(options) {\n    if (typeof options === 'string') {\n      options = {\n        name: options\n      };\n    }\n\n    if (!options.id) {\n      options.id = options.name;\n    }\n\n    var _options = options,\n        name = _options.name,\n        id = _options.id;\n    var defaults = {\n      level: defaultLogger.level\n    };\n\n    if (typeof name !== 'string' || !name || !name.length) {\n      throw new TypeError('You must supply a name when creating a logger.');\n    }\n\n    var logger = cache[id];\n\n    if (!logger) {\n      logger = new LogLevel(Object.assign({}, defaults, options));\n      cache[id] = logger;\n    }\n\n    return logger;\n  },\n  noConflict: function noConflict() {\n    if (typeof window !== 'undefined' && window.log === defaultLogger) {\n      window.log = existing;\n    }\n\n    return defaultLogger;\n  }\n});\n\n//////////////////\n// WEBPACK FOOTER\n// ./index.js\n// module id = ./index.js\n// module chunks = main\n\n//# sourceURL=webpack://log/./index.js?");
+eval("\n\n__webpack_require__(/*! object.assign/shim */ \"./node_modules/object.assign/shim.js\")();\n\n__webpack_require__(/*! es6-symbol/implement */ \"./node_modules/es6-symbol/implement.js\");\n/* global window: true */\n\n\nvar LogLevel = __webpack_require__(/*! ./lib/LogLevel */ \"./lib/LogLevel.js\");\n\nvar MethodFactory = __webpack_require__(/*! ./lib/MethodFactory */ \"./lib/MethodFactory.js\");\n\nvar PrefixFactory = __webpack_require__(/*! ./factory/PrefixFactory */ \"./factory/PrefixFactory.js\");\n\nvar defaultLogger = new LogLevel({\n  name: 'default'\n});\nvar cache = {\n  default: defaultLogger\n}; // Grab the current global log variable in case of overwrite\n\nvar existing = typeof window !== 'undefined' ? window.log : null;\nmodule.exports = Object.assign(defaultLogger, {\n  get factories() {\n    return {\n      MethodFactory: MethodFactory,\n      PrefixFactory: PrefixFactory\n    };\n  },\n\n  get loggers() {\n    return cache;\n  },\n\n  getLogger: function getLogger(options) {\n    if (typeof options === 'string') {\n      options = {\n        name: options\n      };\n    }\n\n    if (!options.id) {\n      options.id = options.name;\n    }\n\n    var _options = options,\n        name = _options.name,\n        id = _options.id;\n    var defaults = {\n      level: defaultLogger.level\n    };\n\n    if (typeof name !== 'string' || !name || !name.length) {\n      throw new TypeError('You must supply a name when creating a logger.');\n    }\n\n    var logger = cache[id];\n\n    if (!logger) {\n      logger = new LogLevel(Object.assign({}, defaults, options));\n      cache[id] = logger;\n    }\n\n    return logger;\n  },\n  noConflict: function noConflict() {\n    if (typeof window !== 'undefined' && window.log === defaultLogger) {\n      window.log = existing;\n    }\n\n    return defaultLogger;\n  }\n});\n\n//////////////////\n// WEBPACK FOOTER\n// ./index.js\n// module id = ./index.js\n// module chunks = main\n\n//# sourceURL=webpack://log/./index.js?");
 
 /***/ }),
 
@@ -124,7 +124,19 @@ eval("\n/* global window: true */\n\nfunction _classCallCheck(instance, Construc
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-eval("\n\nfunction _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nfunction _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\"value\" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }\n\nfunction _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }\n\nvar noop = function noop() {};\n\nvar levels = Symbol('valid log levels');\nvar instance = Symbol('a log instance');\n\nmodule.exports =\n/*#__PURE__*/\nfunction () {\n  function MethodFactory(logger) {\n    _classCallCheck(this, MethodFactory);\n\n    this[instance] = logger;\n    this[levels] = {\n      TRACE: 0,\n      DEBUG: 1,\n      INFO: 2,\n      WARN: 3,\n      ERROR: 4,\n      SILENT: 5\n    };\n  }\n\n  _createClass(MethodFactory, [{\n    key: \"bindMethod\",\n    // eslint-disable-next-line class-methods-use-this\n    value: function bindMethod(obj, methodName) {\n      var method = obj[methodName];\n\n      if (typeof method.bind === 'function') {\n        return method.bind(obj);\n      }\n\n      try {\n        return Function.prototype.bind.call(method, obj);\n      } catch (e) {\n        // Missing bind shim or IE8 + Modernizr, fallback to wrapping\n        return function result() {\n          // eslint-disable-next-line prefer-rest-params\n          return Function.prototype.apply.apply(method, [obj, arguments]);\n        };\n      }\n    }\n  }, {\n    key: \"distillLevel\",\n    value: function distillLevel(level) {\n      var result = level;\n\n      if (typeof result === 'string' && typeof this.levels[result.toUpperCase()] !== 'undefined') {\n        result = this.levels[result.toUpperCase()];\n      }\n\n      if (this.levelValid(result)) {\n        return result;\n      }\n    }\n  }, {\n    key: \"levelValid\",\n    value: function levelValid(level) {\n      if (typeof level === 'number' && level >= 0 && level <= this.levels.SILENT) {\n        return true;\n      }\n\n      return false;\n    }\n    /**\n     * Build the best logging method possible for this env\n     * Wherever possible we want to bind, not wrap, to preserve stack traces.\n     * Since we're targeting modern browsers, there's no need to wait for the\n     * console to become available.\n     */\n    // eslint-disable-next-line class-methods-use-this\n\n  }, {\n    key: \"make\",\n    value: function make(methodName) {\n      if (methodName === 'debug') {\n        methodName = 'log';\n      }\n      /* eslint-disable no-console */\n\n\n      if (typeof console[methodName] !== 'undefined') {\n        return this.bindMethod(console, methodName);\n      } else if (typeof console.log !== 'undefined') {\n        return this.bindMethod(console, 'log');\n      }\n      /* eslint-enable no-console */\n\n\n      return noop;\n    }\n  }, {\n    key: \"replaceMethods\",\n    value: function replaceMethods(logLevel) {\n      var level = this.distillLevel(logLevel);\n\n      if (level == null) {\n        throw new Error(\"loglevelnext: replaceMethods() called with invalid level: \".concat(logLevel));\n      }\n\n      if (!this.logger || this.logger.type !== 'LogLevel') {\n        throw new TypeError('loglevelnext: Logger is undefined or invalid. Please specify a valid Logger instance.');\n      }\n\n      var _iteratorNormalCompletion = true;\n      var _didIteratorError = false;\n      var _iteratorError = undefined;\n\n      try {\n        for (var _iterator = this.methods[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {\n          var methodName = _step.value;\n          var methodLevel = this.levels[methodName.toUpperCase()];\n          this.logger[methodName] = methodLevel < level ? noop : this.make(methodName);\n        } // Define log.log as an alias for log.debug\n\n      } catch (err) {\n        _didIteratorError = true;\n        _iteratorError = err;\n      } finally {\n        try {\n          if (!_iteratorNormalCompletion && _iterator.return != null) {\n            _iterator.return();\n          }\n        } finally {\n          if (_didIteratorError) {\n            throw _iteratorError;\n          }\n        }\n      }\n\n      this.logger.log = this.logger.debug;\n    }\n  }, {\n    key: \"levels\",\n    get: function get() {\n      return this[levels];\n    }\n  }, {\n    key: \"logger\",\n    get: function get() {\n      return this[instance];\n    },\n    set: function set(logger) {\n      this[instance] = logger;\n    }\n  }, {\n    key: \"methods\",\n    get: function get() {\n      return Object.keys(this.levels).map(function (key) {\n        return key.toLowerCase();\n      }).filter(function (key) {\n        return key !== 'silent';\n      });\n    }\n  }]);\n\n  return MethodFactory;\n}();\n\n//////////////////\n// WEBPACK FOOTER\n// ./lib/MethodFactory.js\n// module id = ./lib/MethodFactory.js\n// module chunks = main\n\n//# sourceURL=webpack://log/./lib/MethodFactory.js?");
+eval("\n\nfunction _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nfunction _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\"value\" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }\n\nfunction _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }\n\nvar noop = function noop() {};\n\nvar levels = Symbol('valid log levels');\nvar instance = Symbol('a log instance');\n\nmodule.exports =\n/*#__PURE__*/\nfunction () {\n  function MethodFactory(logger) {\n    _classCallCheck(this, MethodFactory);\n\n    this[instance] = logger;\n    this[levels] = {\n      TRACE: 0,\n      DEBUG: 1,\n      INFO: 2,\n      WARN: 3,\n      ERROR: 4,\n      SILENT: 5\n    };\n  }\n\n  _createClass(MethodFactory, [{\n    key: \"bindMethod\",\n    // eslint-disable-next-line class-methods-use-this\n    value: function bindMethod(obj, methodName) {\n      var method = obj[methodName];\n\n      if (typeof method.bind === 'function') {\n        return method.bind(obj);\n      }\n\n      try {\n        return Function.prototype.bind.call(method, obj);\n      } catch (e) {\n        // Missing bind shim or IE8 + Modernizr, fallback to wrapping\n        return function result() {\n          // eslint-disable-next-line prefer-rest-params\n          return Function.prototype.apply.apply(method, [obj, arguments]);\n        };\n      }\n    }\n  }, {\n    key: \"distillLevel\",\n    value: function distillLevel(level) {\n      var result = level;\n\n      if (typeof result === 'string' && typeof this.levels[result.toUpperCase()] !== 'undefined') {\n        result = this.levels[result.toUpperCase()];\n      }\n\n      if (this.levelValid(result)) {\n        return result;\n      }\n    }\n  }, {\n    key: \"levelValid\",\n    value: function levelValid(level) {\n      if (typeof level === 'number' && level >= 0 && level <= this.levels.SILENT) {\n        return true;\n      }\n\n      return false;\n    }\n    /**\n     * Build the best logging method possible for this env\n     * Wherever possible we want to bind, not wrap, to preserve stack traces.\n     * Since we're targeting modern browsers, there's no need to wait for the\n     * console to become available.\n     */\n    // eslint-disable-next-line class-methods-use-this\n\n  }, {\n    key: \"make\",\n    value: function make(methodName) {\n      if (methodName === 'debug') {\n        methodName = 'log';\n      }\n      /* eslint-disable no-console */\n\n\n      if (typeof console[methodName] !== 'undefined') {\n        return this.bindMethod(console, methodName);\n      } else if (typeof console.log !== 'undefined') {\n        return this.bindMethod(console, 'log');\n      }\n      /* eslint-enable no-console */\n\n\n      return noop;\n    }\n  }, {\n    key: \"replaceMethods\",\n    value: function replaceMethods(logLevel) {\n      var _this = this;\n\n      var level = this.distillLevel(logLevel);\n\n      if (level == null) {\n        throw new Error(\"loglevelnext: replaceMethods() called with invalid level: \".concat(logLevel));\n      }\n\n      if (!this.logger || this.logger.type !== 'LogLevel') {\n        throw new TypeError('loglevelnext: Logger is undefined or invalid. Please specify a valid Logger instance.');\n      }\n\n      this.methods.forEach(function (methodName) {\n        var methodLevel = _this.levels[methodName.toUpperCase()];\n\n        _this.logger[methodName] = methodLevel < level ? noop : _this.make(methodName);\n      }); // Define log.log as an alias for log.debug\n\n      this.logger.log = this.logger.debug;\n    }\n  }, {\n    key: \"levels\",\n    get: function get() {\n      return this[levels];\n    }\n  }, {\n    key: \"logger\",\n    get: function get() {\n      return this[instance];\n    },\n    set: function set(logger) {\n      this[instance] = logger;\n    }\n  }, {\n    key: \"methods\",\n    get: function get() {\n      return Object.keys(this.levels).map(function (key) {\n        return key.toLowerCase();\n      }).filter(function (key) {\n        return key !== 'silent';\n      });\n    }\n  }]);\n\n  return MethodFactory;\n}();\n\n//////////////////\n// WEBPACK FOOTER\n// ./lib/MethodFactory.js\n// module id = ./lib/MethodFactory.js\n// module chunks = main\n\n//# sourceURL=webpack://log/./lib/MethodFactory.js?");
+
+/***/ }),
+
+/***/ "./node_modules/d/index.js":
+/*!*********************************!*\
+  !*** ./node_modules/d/index.js ***!
+  \*********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar assign        = __webpack_require__(/*! es5-ext/object/assign */ \"./node_modules/es5-ext/object/assign/index.js\")\n  , normalizeOpts = __webpack_require__(/*! es5-ext/object/normalize-options */ \"./node_modules/es5-ext/object/normalize-options.js\")\n  , isCallable    = __webpack_require__(/*! es5-ext/object/is-callable */ \"./node_modules/es5-ext/object/is-callable.js\")\n  , contains      = __webpack_require__(/*! es5-ext/string/#/contains */ \"./node_modules/es5-ext/string/#/contains/index.js\")\n\n  , d;\n\nd = module.exports = function (dscr, value/*, options*/) {\n\tvar c, e, w, options, desc;\n\tif ((arguments.length < 2) || (typeof dscr !== 'string')) {\n\t\toptions = value;\n\t\tvalue = dscr;\n\t\tdscr = null;\n\t} else {\n\t\toptions = arguments[2];\n\t}\n\tif (dscr == null) {\n\t\tc = w = true;\n\t\te = false;\n\t} else {\n\t\tc = contains.call(dscr, 'c');\n\t\te = contains.call(dscr, 'e');\n\t\tw = contains.call(dscr, 'w');\n\t}\n\n\tdesc = { value: value, configurable: c, enumerable: e, writable: w };\n\treturn !options ? desc : assign(normalizeOpts(options), desc);\n};\n\nd.gs = function (dscr, get, set/*, options*/) {\n\tvar c, e, options, desc;\n\tif (typeof dscr !== 'string') {\n\t\toptions = set;\n\t\tset = get;\n\t\tget = dscr;\n\t\tdscr = null;\n\t} else {\n\t\toptions = arguments[3];\n\t}\n\tif (get == null) {\n\t\tget = undefined;\n\t} else if (!isCallable(get)) {\n\t\toptions = get;\n\t\tget = set = undefined;\n\t} else if (set == null) {\n\t\tset = undefined;\n\t} else if (!isCallable(set)) {\n\t\toptions = set;\n\t\tset = undefined;\n\t}\n\tif (dscr == null) {\n\t\tc = true;\n\t\te = false;\n\t} else {\n\t\tc = contains.call(dscr, 'c');\n\t\te = contains.call(dscr, 'e');\n\t}\n\n\tdesc = { get: get, set: set, configurable: c, enumerable: e };\n\treturn !options ? desc : assign(normalizeOpts(options), desc);\n};\n\n\n//////////////////\n// WEBPACK FOOTER\n// ./node_modules/d/index.js\n// module id = ./node_modules/d/index.js\n// module chunks = main\n\n//# sourceURL=webpack://log/./node_modules/d/index.js?");
 
 /***/ }),
 
@@ -137,6 +149,245 @@ eval("\n\nfunction _classCallCheck(instance, Constructor) { if (!(instance insta
 
 "use strict";
 eval("\n\nvar keys = __webpack_require__(/*! object-keys */ \"./node_modules/object-keys/index.js\");\nvar foreach = __webpack_require__(/*! foreach */ \"./node_modules/foreach/index.js\");\nvar hasSymbols = typeof Symbol === 'function' && typeof Symbol() === 'symbol';\n\nvar toStr = Object.prototype.toString;\n\nvar isFunction = function (fn) {\n\treturn typeof fn === 'function' && toStr.call(fn) === '[object Function]';\n};\n\nvar arePropertyDescriptorsSupported = function () {\n\tvar obj = {};\n\ttry {\n\t\tObject.defineProperty(obj, 'x', { enumerable: false, value: obj });\n        /* eslint-disable no-unused-vars, no-restricted-syntax */\n        for (var _ in obj) { return false; }\n        /* eslint-enable no-unused-vars, no-restricted-syntax */\n\t\treturn obj.x === obj;\n\t} catch (e) { /* this is IE 8. */\n\t\treturn false;\n\t}\n};\nvar supportsDescriptors = Object.defineProperty && arePropertyDescriptorsSupported();\n\nvar defineProperty = function (object, name, value, predicate) {\n\tif (name in object && (!isFunction(predicate) || !predicate())) {\n\t\treturn;\n\t}\n\tif (supportsDescriptors) {\n\t\tObject.defineProperty(object, name, {\n\t\t\tconfigurable: true,\n\t\t\tenumerable: false,\n\t\t\tvalue: value,\n\t\t\twritable: true\n\t\t});\n\t} else {\n\t\tobject[name] = value;\n\t}\n};\n\nvar defineProperties = function (object, map) {\n\tvar predicates = arguments.length > 2 ? arguments[2] : {};\n\tvar props = keys(map);\n\tif (hasSymbols) {\n\t\tprops = props.concat(Object.getOwnPropertySymbols(map));\n\t}\n\tforeach(props, function (name) {\n\t\tdefineProperty(object, name, map[name], predicates[name]);\n\t});\n};\n\ndefineProperties.supportsDescriptors = !!supportsDescriptors;\n\nmodule.exports = defineProperties;\n\n\n//////////////////\n// WEBPACK FOOTER\n// ./node_modules/define-properties/index.js\n// module id = ./node_modules/define-properties/index.js\n// module chunks = main\n\n//# sourceURL=webpack://log/./node_modules/define-properties/index.js?");
+
+/***/ }),
+
+/***/ "./node_modules/es5-ext/function/noop.js":
+/*!***********************************************!*\
+  !*** ./node_modules/es5-ext/function/noop.js ***!
+  \***********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\n// eslint-disable-next-line no-empty-function\nmodule.exports = function () {};\n\n\n//////////////////\n// WEBPACK FOOTER\n// ./node_modules/es5-ext/function/noop.js\n// module id = ./node_modules/es5-ext/function/noop.js\n// module chunks = main\n\n//# sourceURL=webpack://log/./node_modules/es5-ext/function/noop.js?");
+
+/***/ }),
+
+/***/ "./node_modules/es5-ext/global.js":
+/*!****************************************!*\
+  !*** ./node_modules/es5-ext/global.js ***!
+  \****************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+eval("/* eslint strict: \"off\" */\n\nmodule.exports = (function () {\n\treturn this;\n}());\n\n\n//////////////////\n// WEBPACK FOOTER\n// ./node_modules/es5-ext/global.js\n// module id = ./node_modules/es5-ext/global.js\n// module chunks = main\n\n//# sourceURL=webpack://log/./node_modules/es5-ext/global.js?");
+
+/***/ }),
+
+/***/ "./node_modules/es5-ext/object/assign/index.js":
+/*!*****************************************************!*\
+  !*** ./node_modules/es5-ext/object/assign/index.js ***!
+  \*****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nmodule.exports = __webpack_require__(/*! ./is-implemented */ \"./node_modules/es5-ext/object/assign/is-implemented.js\")()\n\t? Object.assign\n\t: __webpack_require__(/*! ./shim */ \"./node_modules/es5-ext/object/assign/shim.js\");\n\n\n//////////////////\n// WEBPACK FOOTER\n// ./node_modules/es5-ext/object/assign/index.js\n// module id = ./node_modules/es5-ext/object/assign/index.js\n// module chunks = main\n\n//# sourceURL=webpack://log/./node_modules/es5-ext/object/assign/index.js?");
+
+/***/ }),
+
+/***/ "./node_modules/es5-ext/object/assign/is-implemented.js":
+/*!**************************************************************!*\
+  !*** ./node_modules/es5-ext/object/assign/is-implemented.js ***!
+  \**************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nmodule.exports = function () {\n\tvar assign = Object.assign, obj;\n\tif (typeof assign !== \"function\") return false;\n\tobj = { foo: \"raz\" };\n\tassign(obj, { bar: \"dwa\" }, { trzy: \"trzy\" });\n\treturn (obj.foo + obj.bar + obj.trzy) === \"razdwatrzy\";\n};\n\n\n//////////////////\n// WEBPACK FOOTER\n// ./node_modules/es5-ext/object/assign/is-implemented.js\n// module id = ./node_modules/es5-ext/object/assign/is-implemented.js\n// module chunks = main\n\n//# sourceURL=webpack://log/./node_modules/es5-ext/object/assign/is-implemented.js?");
+
+/***/ }),
+
+/***/ "./node_modules/es5-ext/object/assign/shim.js":
+/*!****************************************************!*\
+  !*** ./node_modules/es5-ext/object/assign/shim.js ***!
+  \****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar keys  = __webpack_require__(/*! ../keys */ \"./node_modules/es5-ext/object/keys/index.js\")\n  , value = __webpack_require__(/*! ../valid-value */ \"./node_modules/es5-ext/object/valid-value.js\")\n  , max   = Math.max;\n\nmodule.exports = function (dest, src /*, …srcn*/) {\n\tvar error, i, length = max(arguments.length, 2), assign;\n\tdest = Object(value(dest));\n\tassign = function (key) {\n\t\ttry {\n\t\t\tdest[key] = src[key];\n\t\t} catch (e) {\n\t\t\tif (!error) error = e;\n\t\t}\n\t};\n\tfor (i = 1; i < length; ++i) {\n\t\tsrc = arguments[i];\n\t\tkeys(src).forEach(assign);\n\t}\n\tif (error !== undefined) throw error;\n\treturn dest;\n};\n\n\n//////////////////\n// WEBPACK FOOTER\n// ./node_modules/es5-ext/object/assign/shim.js\n// module id = ./node_modules/es5-ext/object/assign/shim.js\n// module chunks = main\n\n//# sourceURL=webpack://log/./node_modules/es5-ext/object/assign/shim.js?");
+
+/***/ }),
+
+/***/ "./node_modules/es5-ext/object/is-callable.js":
+/*!****************************************************!*\
+  !*** ./node_modules/es5-ext/object/is-callable.js ***!
+  \****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("// Deprecated\n\n\n\nmodule.exports = function (obj) {\n return typeof obj === \"function\";\n};\n\n\n//////////////////\n// WEBPACK FOOTER\n// ./node_modules/es5-ext/object/is-callable.js\n// module id = ./node_modules/es5-ext/object/is-callable.js\n// module chunks = main\n\n//# sourceURL=webpack://log/./node_modules/es5-ext/object/is-callable.js?");
+
+/***/ }),
+
+/***/ "./node_modules/es5-ext/object/is-value.js":
+/*!*************************************************!*\
+  !*** ./node_modules/es5-ext/object/is-value.js ***!
+  \*************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar _undefined = __webpack_require__(/*! ../function/noop */ \"./node_modules/es5-ext/function/noop.js\")(); // Support ES3 engines\n\nmodule.exports = function (val) {\n return (val !== _undefined) && (val !== null);\n};\n\n\n//////////////////\n// WEBPACK FOOTER\n// ./node_modules/es5-ext/object/is-value.js\n// module id = ./node_modules/es5-ext/object/is-value.js\n// module chunks = main\n\n//# sourceURL=webpack://log/./node_modules/es5-ext/object/is-value.js?");
+
+/***/ }),
+
+/***/ "./node_modules/es5-ext/object/keys/index.js":
+/*!***************************************************!*\
+  !*** ./node_modules/es5-ext/object/keys/index.js ***!
+  \***************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nmodule.exports = __webpack_require__(/*! ./is-implemented */ \"./node_modules/es5-ext/object/keys/is-implemented.js\")()\n\t? Object.keys\n\t: __webpack_require__(/*! ./shim */ \"./node_modules/es5-ext/object/keys/shim.js\");\n\n\n//////////////////\n// WEBPACK FOOTER\n// ./node_modules/es5-ext/object/keys/index.js\n// module id = ./node_modules/es5-ext/object/keys/index.js\n// module chunks = main\n\n//# sourceURL=webpack://log/./node_modules/es5-ext/object/keys/index.js?");
+
+/***/ }),
+
+/***/ "./node_modules/es5-ext/object/keys/is-implemented.js":
+/*!************************************************************!*\
+  !*** ./node_modules/es5-ext/object/keys/is-implemented.js ***!
+  \************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nmodule.exports = function () {\n\ttry {\n\t\tObject.keys(\"primitive\");\n\t\treturn true;\n\t} catch (e) {\n return false;\n}\n};\n\n\n//////////////////\n// WEBPACK FOOTER\n// ./node_modules/es5-ext/object/keys/is-implemented.js\n// module id = ./node_modules/es5-ext/object/keys/is-implemented.js\n// module chunks = main\n\n//# sourceURL=webpack://log/./node_modules/es5-ext/object/keys/is-implemented.js?");
+
+/***/ }),
+
+/***/ "./node_modules/es5-ext/object/keys/shim.js":
+/*!**************************************************!*\
+  !*** ./node_modules/es5-ext/object/keys/shim.js ***!
+  \**************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar isValue = __webpack_require__(/*! ../is-value */ \"./node_modules/es5-ext/object/is-value.js\");\n\nvar keys = Object.keys;\n\nmodule.exports = function (object) {\n\treturn keys(isValue(object) ? Object(object) : object);\n};\n\n\n//////////////////\n// WEBPACK FOOTER\n// ./node_modules/es5-ext/object/keys/shim.js\n// module id = ./node_modules/es5-ext/object/keys/shim.js\n// module chunks = main\n\n//# sourceURL=webpack://log/./node_modules/es5-ext/object/keys/shim.js?");
+
+/***/ }),
+
+/***/ "./node_modules/es5-ext/object/normalize-options.js":
+/*!**********************************************************!*\
+  !*** ./node_modules/es5-ext/object/normalize-options.js ***!
+  \**********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar isValue = __webpack_require__(/*! ./is-value */ \"./node_modules/es5-ext/object/is-value.js\");\n\nvar forEach = Array.prototype.forEach, create = Object.create;\n\nvar process = function (src, obj) {\n\tvar key;\n\tfor (key in src) obj[key] = src[key];\n};\n\n// eslint-disable-next-line no-unused-vars\nmodule.exports = function (opts1 /*, …options*/) {\n\tvar result = create(null);\n\tforEach.call(arguments, function (options) {\n\t\tif (!isValue(options)) return;\n\t\tprocess(Object(options), result);\n\t});\n\treturn result;\n};\n\n\n//////////////////\n// WEBPACK FOOTER\n// ./node_modules/es5-ext/object/normalize-options.js\n// module id = ./node_modules/es5-ext/object/normalize-options.js\n// module chunks = main\n\n//# sourceURL=webpack://log/./node_modules/es5-ext/object/normalize-options.js?");
+
+/***/ }),
+
+/***/ "./node_modules/es5-ext/object/valid-value.js":
+/*!****************************************************!*\
+  !*** ./node_modules/es5-ext/object/valid-value.js ***!
+  \****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar isValue = __webpack_require__(/*! ./is-value */ \"./node_modules/es5-ext/object/is-value.js\");\n\nmodule.exports = function (value) {\n\tif (!isValue(value)) throw new TypeError(\"Cannot use null or undefined\");\n\treturn value;\n};\n\n\n//////////////////\n// WEBPACK FOOTER\n// ./node_modules/es5-ext/object/valid-value.js\n// module id = ./node_modules/es5-ext/object/valid-value.js\n// module chunks = main\n\n//# sourceURL=webpack://log/./node_modules/es5-ext/object/valid-value.js?");
+
+/***/ }),
+
+/***/ "./node_modules/es5-ext/string/#/contains/index.js":
+/*!*********************************************************!*\
+  !*** ./node_modules/es5-ext/string/#/contains/index.js ***!
+  \*********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nmodule.exports = __webpack_require__(/*! ./is-implemented */ \"./node_modules/es5-ext/string/#/contains/is-implemented.js\")()\n\t? String.prototype.contains\n\t: __webpack_require__(/*! ./shim */ \"./node_modules/es5-ext/string/#/contains/shim.js\");\n\n\n//////////////////\n// WEBPACK FOOTER\n// ./node_modules/es5-ext/string/#/contains/index.js\n// module id = ./node_modules/es5-ext/string/#/contains/index.js\n// module chunks = main\n\n//# sourceURL=webpack://log/./node_modules/es5-ext/string/#/contains/index.js?");
+
+/***/ }),
+
+/***/ "./node_modules/es5-ext/string/#/contains/is-implemented.js":
+/*!******************************************************************!*\
+  !*** ./node_modules/es5-ext/string/#/contains/is-implemented.js ***!
+  \******************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar str = \"razdwatrzy\";\n\nmodule.exports = function () {\n\tif (typeof str.contains !== \"function\") return false;\n\treturn (str.contains(\"dwa\") === true) && (str.contains(\"foo\") === false);\n};\n\n\n//////////////////\n// WEBPACK FOOTER\n// ./node_modules/es5-ext/string/#/contains/is-implemented.js\n// module id = ./node_modules/es5-ext/string/#/contains/is-implemented.js\n// module chunks = main\n\n//# sourceURL=webpack://log/./node_modules/es5-ext/string/#/contains/is-implemented.js?");
+
+/***/ }),
+
+/***/ "./node_modules/es5-ext/string/#/contains/shim.js":
+/*!********************************************************!*\
+  !*** ./node_modules/es5-ext/string/#/contains/shim.js ***!
+  \********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar indexOf = String.prototype.indexOf;\n\nmodule.exports = function (searchString/*, position*/) {\n\treturn indexOf.call(this, searchString, arguments[1]) > -1;\n};\n\n\n//////////////////\n// WEBPACK FOOTER\n// ./node_modules/es5-ext/string/#/contains/shim.js\n// module id = ./node_modules/es5-ext/string/#/contains/shim.js\n// module chunks = main\n\n//# sourceURL=webpack://log/./node_modules/es5-ext/string/#/contains/shim.js?");
+
+/***/ }),
+
+/***/ "./node_modules/es6-symbol/implement.js":
+/*!**********************************************!*\
+  !*** ./node_modules/es6-symbol/implement.js ***!
+  \**********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nif (!__webpack_require__(/*! ./is-implemented */ \"./node_modules/es6-symbol/is-implemented.js\")()) {\n\tObject.defineProperty(__webpack_require__(/*! es5-ext/global */ \"./node_modules/es5-ext/global.js\"), 'Symbol',\n\t\t{ value: __webpack_require__(/*! ./polyfill */ \"./node_modules/es6-symbol/polyfill.js\"), configurable: true, enumerable: false,\n\t\t\twritable: true });\n}\n\n\n//////////////////\n// WEBPACK FOOTER\n// ./node_modules/es6-symbol/implement.js\n// module id = ./node_modules/es6-symbol/implement.js\n// module chunks = main\n\n//# sourceURL=webpack://log/./node_modules/es6-symbol/implement.js?");
+
+/***/ }),
+
+/***/ "./node_modules/es6-symbol/is-implemented.js":
+/*!***************************************************!*\
+  !*** ./node_modules/es6-symbol/is-implemented.js ***!
+  \***************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar validTypes = { object: true, symbol: true };\n\nmodule.exports = function () {\n\tvar symbol;\n\tif (typeof Symbol !== 'function') return false;\n\tsymbol = Symbol('test symbol');\n\ttry { String(symbol); } catch (e) { return false; }\n\n\t// Return 'true' also for polyfills\n\tif (!validTypes[typeof Symbol.iterator]) return false;\n\tif (!validTypes[typeof Symbol.toPrimitive]) return false;\n\tif (!validTypes[typeof Symbol.toStringTag]) return false;\n\n\treturn true;\n};\n\n\n//////////////////\n// WEBPACK FOOTER\n// ./node_modules/es6-symbol/is-implemented.js\n// module id = ./node_modules/es6-symbol/is-implemented.js\n// module chunks = main\n\n//# sourceURL=webpack://log/./node_modules/es6-symbol/is-implemented.js?");
+
+/***/ }),
+
+/***/ "./node_modules/es6-symbol/is-symbol.js":
+/*!**********************************************!*\
+  !*** ./node_modules/es6-symbol/is-symbol.js ***!
+  \**********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nmodule.exports = function (x) {\n\tif (!x) return false;\n\tif (typeof x === 'symbol') return true;\n\tif (!x.constructor) return false;\n\tif (x.constructor.name !== 'Symbol') return false;\n\treturn (x[x.constructor.toStringTag] === 'Symbol');\n};\n\n\n//////////////////\n// WEBPACK FOOTER\n// ./node_modules/es6-symbol/is-symbol.js\n// module id = ./node_modules/es6-symbol/is-symbol.js\n// module chunks = main\n\n//# sourceURL=webpack://log/./node_modules/es6-symbol/is-symbol.js?");
+
+/***/ }),
+
+/***/ "./node_modules/es6-symbol/polyfill.js":
+/*!*********************************************!*\
+  !*** ./node_modules/es6-symbol/polyfill.js ***!
+  \*********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("// ES2015 Symbol polyfill for environments that do not (or partially) support it\n\n\n\nvar d              = __webpack_require__(/*! d */ \"./node_modules/d/index.js\")\n  , validateSymbol = __webpack_require__(/*! ./validate-symbol */ \"./node_modules/es6-symbol/validate-symbol.js\")\n\n  , create = Object.create, defineProperties = Object.defineProperties\n  , defineProperty = Object.defineProperty, objPrototype = Object.prototype\n  , NativeSymbol, SymbolPolyfill, HiddenSymbol, globalSymbols = create(null)\n  , isNativeSafe;\n\nif (typeof Symbol === 'function') {\n\tNativeSymbol = Symbol;\n\ttry {\n\t\tString(NativeSymbol());\n\t\tisNativeSafe = true;\n\t} catch (ignore) {}\n}\n\nvar generateName = (function () {\n\tvar created = create(null);\n\treturn function (desc) {\n\t\tvar postfix = 0, name, ie11BugWorkaround;\n\t\twhile (created[desc + (postfix || '')]) ++postfix;\n\t\tdesc += (postfix || '');\n\t\tcreated[desc] = true;\n\t\tname = '@@' + desc;\n\t\tdefineProperty(objPrototype, name, d.gs(null, function (value) {\n\t\t\t// For IE11 issue see:\n\t\t\t// https://connect.microsoft.com/IE/feedbackdetail/view/1928508/\n\t\t\t//    ie11-broken-getters-on-dom-objects\n\t\t\t// https://github.com/medikoo/es6-symbol/issues/12\n\t\t\tif (ie11BugWorkaround) return;\n\t\t\tie11BugWorkaround = true;\n\t\t\tdefineProperty(this, name, d(value));\n\t\t\tie11BugWorkaround = false;\n\t\t}));\n\t\treturn name;\n\t};\n}());\n\n// Internal constructor (not one exposed) for creating Symbol instances.\n// This one is used to ensure that `someSymbol instanceof Symbol` always return false\nHiddenSymbol = function Symbol(description) {\n\tif (this instanceof HiddenSymbol) throw new TypeError('Symbol is not a constructor');\n\treturn SymbolPolyfill(description);\n};\n\n// Exposed `Symbol` constructor\n// (returns instances of HiddenSymbol)\nmodule.exports = SymbolPolyfill = function Symbol(description) {\n\tvar symbol;\n\tif (this instanceof Symbol) throw new TypeError('Symbol is not a constructor');\n\tif (isNativeSafe) return NativeSymbol(description);\n\tsymbol = create(HiddenSymbol.prototype);\n\tdescription = (description === undefined ? '' : String(description));\n\treturn defineProperties(symbol, {\n\t\t__description__: d('', description),\n\t\t__name__: d('', generateName(description))\n\t});\n};\ndefineProperties(SymbolPolyfill, {\n\tfor: d(function (key) {\n\t\tif (globalSymbols[key]) return globalSymbols[key];\n\t\treturn (globalSymbols[key] = SymbolPolyfill(String(key)));\n\t}),\n\tkeyFor: d(function (s) {\n\t\tvar key;\n\t\tvalidateSymbol(s);\n\t\tfor (key in globalSymbols) if (globalSymbols[key] === s) return key;\n\t}),\n\n\t// To ensure proper interoperability with other native functions (e.g. Array.from)\n\t// fallback to eventual native implementation of given symbol\n\thasInstance: d('', (NativeSymbol && NativeSymbol.hasInstance) || SymbolPolyfill('hasInstance')),\n\tisConcatSpreadable: d('', (NativeSymbol && NativeSymbol.isConcatSpreadable) ||\n\t\tSymbolPolyfill('isConcatSpreadable')),\n\titerator: d('', (NativeSymbol && NativeSymbol.iterator) || SymbolPolyfill('iterator')),\n\tmatch: d('', (NativeSymbol && NativeSymbol.match) || SymbolPolyfill('match')),\n\treplace: d('', (NativeSymbol && NativeSymbol.replace) || SymbolPolyfill('replace')),\n\tsearch: d('', (NativeSymbol && NativeSymbol.search) || SymbolPolyfill('search')),\n\tspecies: d('', (NativeSymbol && NativeSymbol.species) || SymbolPolyfill('species')),\n\tsplit: d('', (NativeSymbol && NativeSymbol.split) || SymbolPolyfill('split')),\n\ttoPrimitive: d('', (NativeSymbol && NativeSymbol.toPrimitive) || SymbolPolyfill('toPrimitive')),\n\ttoStringTag: d('', (NativeSymbol && NativeSymbol.toStringTag) || SymbolPolyfill('toStringTag')),\n\tunscopables: d('', (NativeSymbol && NativeSymbol.unscopables) || SymbolPolyfill('unscopables'))\n});\n\n// Internal tweaks for real symbol producer\ndefineProperties(HiddenSymbol.prototype, {\n\tconstructor: d(SymbolPolyfill),\n\ttoString: d('', function () { return this.__name__; })\n});\n\n// Proper implementation of methods exposed on Symbol.prototype\n// They won't be accessible on produced symbol instances as they derive from HiddenSymbol.prototype\ndefineProperties(SymbolPolyfill.prototype, {\n\ttoString: d(function () { return 'Symbol (' + validateSymbol(this).__description__ + ')'; }),\n\tvalueOf: d(function () { return validateSymbol(this); })\n});\ndefineProperty(SymbolPolyfill.prototype, SymbolPolyfill.toPrimitive, d('', function () {\n\tvar symbol = validateSymbol(this);\n\tif (typeof symbol === 'symbol') return symbol;\n\treturn symbol.toString();\n}));\ndefineProperty(SymbolPolyfill.prototype, SymbolPolyfill.toStringTag, d('c', 'Symbol'));\n\n// Proper implementaton of toPrimitive and toStringTag for returned symbol instances\ndefineProperty(HiddenSymbol.prototype, SymbolPolyfill.toStringTag,\n\td('c', SymbolPolyfill.prototype[SymbolPolyfill.toStringTag]));\n\n// Note: It's important to define `toPrimitive` as last one, as some implementations\n// implement `toPrimitive` natively without implementing `toStringTag` (or other specified symbols)\n// And that may invoke error in definition flow:\n// See: https://github.com/medikoo/es6-symbol/issues/13#issuecomment-164146149\ndefineProperty(HiddenSymbol.prototype, SymbolPolyfill.toPrimitive,\n\td('c', SymbolPolyfill.prototype[SymbolPolyfill.toPrimitive]));\n\n\n//////////////////\n// WEBPACK FOOTER\n// ./node_modules/es6-symbol/polyfill.js\n// module id = ./node_modules/es6-symbol/polyfill.js\n// module chunks = main\n\n//# sourceURL=webpack://log/./node_modules/es6-symbol/polyfill.js?");
+
+/***/ }),
+
+/***/ "./node_modules/es6-symbol/validate-symbol.js":
+/*!****************************************************!*\
+  !*** ./node_modules/es6-symbol/validate-symbol.js ***!
+  \****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar isSymbol = __webpack_require__(/*! ./is-symbol */ \"./node_modules/es6-symbol/is-symbol.js\");\n\nmodule.exports = function (value) {\n\tif (!isSymbol(value)) throw new TypeError(value + \" is not a symbol\");\n\treturn value;\n};\n\n\n//////////////////\n// WEBPACK FOOTER\n// ./node_modules/es6-symbol/validate-symbol.js\n// module id = ./node_modules/es6-symbol/validate-symbol.js\n// module chunks = main\n\n//# sourceURL=webpack://log/./node_modules/es6-symbol/validate-symbol.js?");
 
 /***/ }),
 
