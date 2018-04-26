@@ -1,5 +1,8 @@
 'use strict';
 
+require('object.assign/shim')();
+require('es6-symbol/implement');
+
 /* global window: true */
 const LogLevel = require('./lib/LogLevel');
 const MethodFactory = require('./lib/MethodFactory');
