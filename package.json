@@ -1,6 +1,6 @@
 {
   "name": "loglevelnext",
-  "version": "1.0.5",
+  "version": "2.0.0",
   "description": "A modern logging library for Node.js and modern browsers that provides log level mapping to the console",
   "license": "MIT",
   "repository": "shellscape/loglevelnext",
@@ -12,8 +12,8 @@
   },
   "scripts": {
     "build": "npm run build:dev && npm run build:prod",
-    "build:dev": "NODE_ENV=development webpack index.js",
-    "build:prod": "NODE_ENV=production webpack index.js",
+    "build:dev": "NODE_ENV=development wp",
+    "build:prod": "NODE_ENV=production wp",
     "ci": "npm run cover -- --report lcovonly && npm run lint && npm run test",
     "check-node": "check-node-version --node 10",
     "cover": "istanbul cover node_modules/mocha/bin/_mocha",
@@ -70,7 +70,8 @@
     "mocha": "^5.1.1",
     "mocha-chrome": "^1.0.2",
     "sinon": "^6.1.5",
-    "webpack": "^4.0.0"
+    "webpack": "^4.0.0",
+    "webpack-command": "^0.4.1"
   },
   "types": "types/index.d.ts"
 }

@@ -6,6 +6,7 @@ const dev = process.env.NODE_ENV === 'development';
 
 module.exports = {
   mode: dev ? 'development' : 'production',
+  entry: './index.js',
   output: {
     filename: `loglevelnext${dev ? '' : '.min'}.js`,
     path: path.resolve(__dirname, 'dist'),
