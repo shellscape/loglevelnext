@@ -1,6 +1,6 @@
 {
   "name": "loglevelnext",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "A modern logging library for Node.js and modern browsers that provides log level mapping to the console",
   "license": "MIT",
   "repository": "shellscape/loglevelnext",
@@ -27,6 +27,7 @@
     "dist/",
     "factory/",
     "lib/",
+    "types/",
     "index.js"
   ],
   "keywords": [
