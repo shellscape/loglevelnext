@@ -59,3 +59,6 @@ module.exports = Object.assign(defaultLogger, {
     return defaultLogger;
   }
 });
+
+// TypeScript fix
+module.exports.default = module.exports;
