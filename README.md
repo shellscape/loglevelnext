@@ -143,7 +143,7 @@ We welcome your contributions! Please have a read of [CONTRIBUTING.md](./.github
 
 ## Attribution
 
-_This project originated as fork of the much-loved [loglevel](loglevel) module, but has diverged and has been rewritten, and now shares similarities only in functional intent._
+_This project originated as a fork of the much-loved [loglevel](loglevel) module, but has diverged and has been rewritten, and now shares similarities only in functional intent._
 
 Base Log SVG by [Freepik](http://www.freepik.com/) from [www.flaticon.com](http://www.flaticon.com).
 
