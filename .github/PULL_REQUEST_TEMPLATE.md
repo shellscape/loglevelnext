@@ -1,34 +1,17 @@
-> Thank you for submitting a pull request! Please note that this template is not
-optional. Please fill out **_all_** fields, or your pull request may be rejected.
-Please do not delete this template. Please **remove this header** to acknowledge
-this message.
+**Which issue #** if any, does this resolve?
 
-<!-- Please place an x (no spaces!) in all [ ] that apply -->
+<!-- PRs must be accompanied by related tests -->
 
-- [ ] This is a **bugfix**
-- [ ] This is a new **feature**
-- [ ] This is a **code refactor**
-- [ ] This is a **test update**
-- [ ] This is a **typo fix**
-- [ ] This is a **metadata update**
+Please check one:
+- [ ] New tests created for this change
+- [ ] Tests updated for this change
 
-### For Bugs and Features; did you add new tests?
+This PR:
+- [ ] Adds new API
+- [ ] Extends existing API, backwards-compatible
+- [ ] Introduces a breaking change
+- [ ] Fixes a bug
 
-<!-- Please note that we won't approve your changes if you don't add tests. -->
+---
 
-### Motivation / Use-Case
-
-<!--
-  Please explain the **motivation** or use-case for making this change.
-  What existing problem does the pull request solve?
-  If this Pull Request addresses an issue, please link to the issue.
--->
-
-### Breaking Changes
-
-<!--
-  If this PR introduces a breaking change, please describe the impact and a
-  migration path for existing applications.
--->
-
-### Additional Info
+<!-- add additional comments here -->

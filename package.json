@@ -2,34 +2,48 @@
   "name": "loglevelnext",
   "version": "2.0.1",
   "description": "A modern logging library for Node.js and modern browsers that provides log level mapping to the console",
-  "license": "MIT",
+  "license": "MPL",
   "repository": "shellscape/loglevelnext",
   "author": "Andrew Powell <andrew@shellscape.org>",
   "homepage": "https://github.com/shellscape/loglevelnext",
   "main": "index.js",
   "engines": {
-    "node": ">= 6"
+    "node": ">= 6.14.4"
   },
   "scripts": {
-    "build": "npm run build:dev && npm run build:prod",
-    "build:dev": "NODE_ENV=development wp",
-    "build:prod": "NODE_ENV=production wp",
-    "ci": "npm run cover -- --report lcovonly && npm run lint && npm run test",
-    "check-node": "check-node-version --node 10",
-    "cover": "istanbul cover node_modules/mocha/bin/_mocha",
-    "lint": "eslint index.js lib test",
-    "test": "npm run test:node && npm run test:browser",
-    "test:browser": "if npm run check-node -- --silent; then mocha-chrome test/tests/browser/entry.html; else npm run test:browser:skip; fi",
-    "test:browser:skip": "echo \"\\nSkipping Browser Test\\n\\n\\033[32mTests Completed Successfully\\033[0m\"",
-    "test:node": "mocha --full-trace --check-leaks"
+    "ci:coverage": "nyc npm run test && nyc report --reporter=text-lcov > coverage.lcov",
+    "ci:lint": "npm run lint && npm run security",
+    "ci:lint:commits": "commitlint --from=${CIRCLE_BRANCH} --to=${CIRCLE_SHA1}",
+    "ci:test": "npm run test",
+    "commitlint": "commitlint",
+    "commitmsg": "commitlint -e $GIT_PARAMS",
+    "lint": "eslint --fix --cache lib test",
+    "lint-staged": "lint-staged",
+    "security": "npm audit",
+    "test": "ava"
   },
   "files": [
-    "dist/",
     "factory/",
     "lib/",
     "types/",
     "index.js"
   ],
+  "dependencies": {},
+  "devDependencies": {
+    "@commitlint/cli": "^7.1.2",
+    "@commitlint/config-conventional": "^7.1.2",
+    "ava": "^0.25.0",
+    "chalk": "^2.3.0",
+    "eslint": "^5.3.0",
+    "eslint-config-shellscape": "^2.0.2",
+    "eslint-plugin-import": "^2.8.0",
+    "lint-staged": "^7.3.0",
+    "nyc": "^13.0.1",
+    "pre-commit": "^1.2.2",
+    "sinon": "^6.1.5",
+    "standard-version": "^4.4.0"
+  },
+  "types": "types/index.d.ts",
   "keywords": [
     "browser",
     "console",
@@ -48,31 +62,11 @@
     "trace",
     "warn"
   ],
-  "dependencies": {
-    "es6-symbol": "^3.1.1",
-    "object.assign": "^4.1.0"
-  },
-  "devDependencies": {
-    "@babel/cli": "^7.0.0-beta.46",
-    "@babel/core": "^7.0.0-beta.46",
-    "@babel/polyfill": "^7.0.0-beta.46",
-    "@babel/preset-env": "^7.0.0-beta.46",
-    "@babel/register": "^7.0.0-beta.46",
-    "assert": "^1.4.1",
-    "babel-loader": "^8.0.0-beta.2",
-    "better-assert": "github:devinrhode2/better-assert-browser",
-    "chalk": "^2.3.0",
-    "check-node-version": "^3.1.1",
-    "codecov": "^3.0.4",
-    "eslint": "^5.3.0",
-    "eslint-config-webpack": "^1.2.5",
-    "eslint-plugin-import": "^2.8.0",
-    "istanbul": "^0.4.5",
-    "mocha": "^5.1.1",
-    "mocha-chrome": "^1.0.2",
-    "sinon": "^6.1.5",
-    "webpack": "^4.0.0",
-    "webpack-command": "^0.4.1"
-  },
-  "types": "types/index.d.ts"
+  "pre-commit": "lint-staged",
+  "lint-staged": {
+    "*.js": [
+      "eslint --fix",
+      "git add"
+    ]
+  }
 }

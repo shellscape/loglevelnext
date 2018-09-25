@@ -1,9 +1,14 @@
-'use strict';
+/*
+  Copyright © 2018 Andrew Powell
 
-require('object.assign/shim')();
-require('es6-symbol/implement');
+  This Source Code Form is subject to the terms of the Mozilla Public
+  License, v. 2.0. If a copy of the MPL was not distributed with this
+  file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-/* global window: true */
+  The above copyright notice and this permission notice shall be
+  included in all copies or substantial portions of this Source Code Form.
+*/
+
 const LogLevel = require('./lib/LogLevel');
 const MethodFactory = require('./lib/MethodFactory');
 const PrefixFactory = require('./factory/PrefixFactory');
@@ -11,11 +16,7 @@ const PrefixFactory = require('./factory/PrefixFactory');
 const defaultLogger = new LogLevel({ name: 'default' });
 const cache = { default: defaultLogger };
 
-// Grab the current global log variable in case of overwrite
-const existing = (typeof window !== 'undefined') ? window.log : null;
-
 module.exports = Object.assign(defaultLogger, {
-
   get factories() {
     return {
       MethodFactory,
@@ -27,9 +28,13 @@ module.exports = Object.assign(defaultLogger, {
     return cache;
   },
 
-  getLogger(options) {
-    if (typeof options === 'string') {
+  getLogger(opts) {
+    let options;
+
+    if (typeof opts === 'string') {
       options = { name: options };
+    } else {
+      options = Object.assign({}, opts);
     }
 
     if (!options.id) {
@@ -49,14 +54,6 @@ module.exports = Object.assign(defaultLogger, {
       cache[id] = logger;
     }
     return logger;
-  },
-
-  noConflict() {
-    if (typeof window !== 'undefined' && window.log === defaultLogger) {
-      window.log = existing;
-    }
-
-    return defaultLogger;
   }
 });
 
