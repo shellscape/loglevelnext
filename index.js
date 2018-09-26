@@ -32,7 +32,7 @@ module.exports = Object.assign(defaultLogger, {
     let options;
 
     if (typeof opts === 'string') {
-      options = { name: options };
+      options = { name: opts };
     } else {
       options = Object.assign({}, opts);
     }
