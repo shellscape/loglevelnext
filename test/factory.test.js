@@ -2,7 +2,7 @@ const test = require('ava');
 const sinon = require('sinon');
 
 const LogLevel = require('../lib/LogLevel');
-const MethodFactory = require('../lib/MethodFactory');
+const MethodFactory = require('../lib/factory/MethodFactory');
 
 const levels = {
   TRACE: 0,

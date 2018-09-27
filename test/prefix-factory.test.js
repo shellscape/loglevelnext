@@ -2,7 +2,7 @@ const test = require('ava');
 const sinon = require('sinon');
 
 const LogLevel = require('../lib/LogLevel');
-const PrefixFactory = require('../factory/PrefixFactory');
+const PrefixFactory = require('../lib/factory/PrefixFactory');
 
 const sandbox = sinon.createSandbox();
 

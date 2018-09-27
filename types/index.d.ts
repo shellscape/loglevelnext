@@ -40,12 +40,13 @@ export interface LogLevel {
   warn(...args: any[]): void;
 }
 
-declare const loglevelnext: LogLevel & {
+export interface DefaultLogger extends LogLevel {
   factories: any;
   loggers: any;
 
-  getLogger(options: any): LogLevel;
-  noConflict(): void;
-};
+  create(options: any): LogLevel;
+}
 
-export default loglevelnext
+declare const instance: DefaultLogger
+
+export default instance

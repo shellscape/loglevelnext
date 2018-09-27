@@ -2,7 +2,7 @@ const test = require('ava');
 const chalk = require('chalk');
 const sinon = require('sinon');
 
-const log = require('../');
+const log = require('../lib');
 
 const sandbox = sinon.createSandbox();
 const spyMethods = Object.keys(log.levels)

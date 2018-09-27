@@ -1,6 +1,6 @@
 const test = require('ava');
 
-const log = require('../');
+const log = require('../lib');
 const LogLevel = require('../lib/LogLevel');
 
 const levels = Object.keys(log.levels)
