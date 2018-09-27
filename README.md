@@ -23,9 +23,7 @@
 
 # loglevelnext
 
-`loglevelnext` is a modern logging library for Node.js and modern browsers,
-written with modern patterns and practices which provides log level mapping of the
-`console` object.
+`loglevelnext` is a modern logging library for Node.js and modern browsers, written with modern patterns and practices which provides log level mapping of the `console` object.
 
 For browser use, or use in client-side applications, `loglevelnext` should be bundled by your preferred bundler or compiler, such as [Rollup](https://rollupjs.org).
 
@@ -65,18 +63,15 @@ pairs:
 
 ## Default Logger
 
-When requiring `loglevelnext` in Node.js the default export will be an instance
-of [`LogLevel`](docs/LogLevel.md) wrapped with some extra sugar.
+When requiring `loglevelnext` in Node.js the default export will be an instance of [`LogLevel`](docs/LogLevel.md) wrapped with some extra sugar.
 
 ### Methods
 
-Please see [`LogLevel`](docs/LogLevel.md) for documentation of all methods and
-properties of every log instance, including the default instance.
+Please see [`LogLevel`](docs/LogLevel.md) for documentation of all methods and properties of every log instance, including the default instance.
 
 #### `trace`, `debug`, `info`, `warn`, `error`
 
-These methods correspond to the available log levels and accept parameters
-identical to their `console` counterparts. eg.
+These methods correspond to the available log levels and accept parameters identical to their `console` counterparts. e.g.
 
 ```js
 console.info('...');
@@ -84,15 +79,11 @@ console.info('...');
 // ... etc
 ```
 
-#### `getLogger(options)`
+#### `create(options)`
 
-Returns a new `LogLevel` instance. The `options` parameter should be an `Object`
-matching the options for the [`LogLevel`](docs/LogLevel.md) constructor.
+Returns a new `LogLevel` instance. The `options` parameter should be an `Object` matching the options for the [`LogLevel`](docs/LogLevel.md) constructor.
 
-_Note: the logger returned is cached, and subsequent requests for a logger of
-the same name will return the same logger instance. If you require multiple
-unique loggers of the same name, pass an `id` property with a unique identifier
-and `getLogger` will use that over the `name`._
+_Note: `LogLevel` instances created are cached. Calling `create` with a previously used `name` will return the cached `LogLevel` instance. To create a different instance with the same `name`, assign a unique `id` property to the `options` parameter._
 
 ### Properties
 
@@ -100,7 +91,7 @@ and `getLogger` will use that over the `name`._
 
 Type: `Array [ Class ]`
 
-Gets an `Array` containing the factory classes available within `loglevelnext`
+Returns an `Array` containing the factory classes available within `loglevelnext`
 to outside modules. Particularly useful when creating plugins. eg.
 
 ```js
@@ -113,7 +104,7 @@ class MyFactory extends MethodFactory { ... }
 
 Type: `Array [ LogLevel ]`
 
-Gets an `Array` containing references to the currently instantiated loggers.
+Returns an `Array` containing references to the currently instantiated loggers.
 
 ## Factories aka Plugins
 
@@ -129,17 +120,9 @@ which provides similar functionality as the [loglevel-prefix](loglevelpre) plugi
 and is the factory which is used when a user passes the `prefix` option to a
 `LogLevel` instance.
 
-## Persisting the Level
-
-Persisting the level of a log between sessions in a browser isn't the job of a logging library. Primarily because working with `localStorage` these days is a breeze. If you need to store and retrieve a log level value between sessions, please look into leveraging the excellent and very tiny [`store2`](https://github.com/nbubna/store) library.
-
 ## Browser Support
 
 As mentioned, `loglevelnext` is a logging library for Node.js and _modern_ browsers, which means the latest versions of the major browsers. When bundling or compiling `loglevelnext` for use in a browser, you should ensure that appropriate polyfills are used. e.g. Internet Explorer typically requires polyfilling both `Symbol` and `Object.assign`.
-
-## Contributing
-
-We welcome your contributions! Please have a read of [CONTRIBUTING.md](./.github/CONTRIBUTING.md) for more information on how to get involved.
 
 ## Attribution
 

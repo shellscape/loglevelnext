@@ -6,7 +6,7 @@
   "repository": "shellscape/loglevelnext",
   "author": "Andrew Powell <andrew@shellscape.org>",
   "homepage": "https://github.com/shellscape/loglevelnext",
-  "main": "index.js",
+  "main": "lib/index.js",
   "engines": {
     "node": ">= 6.14.4"
   },
@@ -23,10 +23,9 @@
     "test": "ava"
   },
   "files": [
-    "factory/",
     "lib/",
     "types/",
-    "index.js"
+    "README.md"
   ],
   "dependencies": {},
   "devDependencies": {
