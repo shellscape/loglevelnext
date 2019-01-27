@@ -1,11 +1,11 @@
-[tests]: 	https://img.shields.io/circleci/project/github/shellscape/postcss-less.svg
-[tests-url]: https://circleci.com/gh/shellscape/postcss-less
+[tests]: 	https://img.shields.io/circleci/project/github/shellscape/loglevelnext.svg
+[tests-url]: https://circleci.com/gh/shellscape/loglevelnext
 
-[cover]: https://codecov.io/gh/shellscape/postcss-less/branch/master/graph/badge.svg
-[cover-url]: https://codecov.io/gh/shellscape/postcss-less
+[cover]: https://codecov.io/gh/shellscape/loglevelnext/branch/master/graph/badge.svg
+[cover-url]: https://codecov.io/gh/shellscape/loglevelnext
 
-[size]: https://packagephobia.now.sh/badge?p=postcss-less
-[size-url]: https://packagephobia.now.sh/result?p=postcss-less
+[size]: https://packagephobia.now.sh/badge?p=loglevelnext
+[size-url]: https://packagephobia.now.sh/result?p=loglevelnext
 
 [loglevel]: https://githhub.com/pimterry/loglevel
 [loglevelpre]: https://github.com/kutuluk/loglevel-plugin-prefix

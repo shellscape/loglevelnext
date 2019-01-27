@@ -1,4 +1,5 @@
 .DS_Store
+.eslintcache
 npm-debug.log
 coverage
 node_modules
