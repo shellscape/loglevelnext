@@ -52,7 +52,7 @@ for (const name of Object.keys(log.levels)) {
   });
 
   test.serial(`logs only levels >= ${name}`, (t) => {
-    for (let method of spyMethods) {
+    for (const method of spyMethods) {
       let expected = 1;
 
       // NOTE: the [object Object] + stack output to console is part of the 'trace' test. fret not.
@@ -66,9 +66,6 @@ for (const name of Object.keys(log.levels)) {
         expected = 2;
       }
 
-      if (method === 'debug') {
-        method = 'log';
-      }
       t.is(console[method].callCount, expected);
     }
   });
