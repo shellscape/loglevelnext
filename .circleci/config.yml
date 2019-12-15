@@ -63,11 +63,8 @@ jobs:
           name: Run linting.
           command: npm run lint
       - run:
-          name: Run NSP Security Check.
+          name: Run NPM Security Check
           command: npm run security
-      - run:
-          name: Validate Commit Messages
-          command: npm run ci:lint:commits
   publish:
     docker:
       - image: rollupcabal/circleci-node-base:latest
