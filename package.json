@@ -1,6 +1,6 @@
 {
   "name": "loglevelnext",
-  "version": "3.0.1",
+  "version": "4.0.0",
   "description": "A modern logging library for Node.js and modern browsers that provides log level mapping to the console",
   "license": "MPL",
   "repository": "shellscape/loglevelnext",
@@ -8,7 +8,7 @@
   "homepage": "https://github.com/shellscape/loglevelnext",
   "main": "lib/index.js",
   "engines": {
-    "node": ">= 6.14.4"
+    "node": ">= 8.16.0"
   },
   "scripts": {
     "ci:coverage": "nyc npm run test && nyc report --reporter=text-lcov > coverage.lcov",
