@@ -9,8 +9,8 @@
 
 [loglevel]: https://githhub.com/pimterry/loglevel
 [loglevelpre]: https://github.com/kutuluk/loglevel-plugin-prefix
-[methodFactory]: lib/MethodFactory.js
-[prefixFactory]: factory/PrefixFactory.js
+[methodFactory]: lib/factory/MethodFactory.js
+[prefixFactory]: lib/factory/PrefixFactory.js
 
 <div align="center">
   <img width="150" height="150" src="http://shellscape.org/assets/images/external/loglevelnext-icon.svg">
