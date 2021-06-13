@@ -1,5 +1,5 @@
 /*
-  Copyright © 2018 Andrew Powell
+  Copyright © 2021 Andrew Powell
 
   This Source Code Form is subject to the terms of the Mozilla Public
   License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -9,26 +9,44 @@
   included in all copies or substantial portions of this Source Code Form.
 */
 
-const MethodFactory = require('./MethodFactory');
+import { LogLevel } from './LogLevel';
+import { MethodFactory } from './MethodFactory';
 
-const defaults = {
+export interface PrefixTemplateOptions {
+  level: string;
+  logger: LogLevel;
+}
+
+export type PrefixTemplateFn = (options: PrefixTemplateOptions) => string;
+
+export interface PrefixFactoryOptions {
+  [key: string]: PrefixTemplateFn | string | undefined;
+  level?: PrefixTemplateFn;
+  name?: PrefixTemplateFn;
+  template?: string;
+  time?: PrefixTemplateFn;
+}
+
+const defaults: PrefixFactoryOptions = {
   level: (opts) => `[${opts.level}]`,
   name: (opts) => opts.logger.name,
   template: '{{time}} {{level}} ',
   time: () => new Date().toTimeString().split(' ')[0]
 };
 
-module.exports = class PrefixFactory extends MethodFactory {
-  constructor(logger, options) {
+export class PrefixFactory extends MethodFactory {
+  private options: PrefixFactoryOptions;
+
+  constructor(logger: LogLevel, options: PrefixFactoryOptions) {
     super(logger);
     this.options = Object.assign({}, defaults, options);
   }
 
-  interpolate(level) {
-    return this.options.template.replace(/{{([^{}]*)}}/g, (stache, prop) => {
+  interpolate(level: string) {
+    return this.options.template!.replace(/{{([^{}]*)}}/g, (stache: string, prop: string) => {
       const fn = this.options[prop];
 
-      if (fn) {
+      if (typeof fn === 'function') {
         return fn({ level, logger: this.logger });
       }
 
@@ -36,10 +54,10 @@ module.exports = class PrefixFactory extends MethodFactory {
     });
   }
 
-  make(methodName) {
+  make(methodName: string) {
     const og = super.make(methodName);
 
-    return (...args) => {
+    return (...args: any[]) => {
       const output = this.interpolate(methodName);
       const [first] = args;
 
@@ -53,4 +71,4 @@ module.exports = class PrefixFactory extends MethodFactory {
       og(...args);
     };
   }
-};
+}

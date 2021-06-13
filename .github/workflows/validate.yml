@@ -1,0 +1,51 @@
+name: Validate
+
+on:
+  pull_request:
+    types:
+      - edited
+      - opened
+      - synchronize
+  push:
+    branches:
+      - "*"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node: [14]
+
+    name: Node ${{ matrix.node }}
+
+    steps:
+      - name: Checkout Commit
+        uses: actions/checkout@v1
+
+      - name: Setup Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: Install pnpm
+        run: npm install pnpm -g
+
+      - name: Sanity Check
+        run: |
+          echo branch `git branch --show-current`;
+          echo node `node -v`;
+          echo pnpm `pnpm -v`
+
+      - name: pnpm install
+        run: pnpm install
+
+      - name: Build
+        run: pnpm build
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Test and Coverage
+        run: pnpm ci:coverage

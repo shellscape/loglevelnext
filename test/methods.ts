@@ -1,7 +1,7 @@
-const test = require('ava');
+import test from 'ava';
 
-const log = require('../lib');
-const LogLevel = require('../lib/LogLevel');
+import log from '../src';
+import { LogLevel } from '../src/LogLevel';
 
 const levels = Object.keys(log.levels)
   .map((key) => key.toLowerCase())

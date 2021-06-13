@@ -1,7 +1,8 @@
 .DS_Store
 .eslintcache
-npm-debug.log
+pnpm-debug.log
 coverage
 node_modules
-test/old
-scratch.js
+dist
+coverage*
+.nyc*

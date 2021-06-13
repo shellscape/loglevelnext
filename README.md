@@ -1,21 +1,18 @@
-[tests]: 	https://img.shields.io/circleci/project/github/shellscape/loglevelnext.svg
+[tests]: https://img.shields.io/circleci/project/github/shellscape/loglevelnext.svg
 [tests-url]: https://circleci.com/gh/shellscape/loglevelnext
-
 [cover]: https://codecov.io/gh/shellscape/loglevelnext/branch/master/graph/badge.svg
 [cover-url]: https://codecov.io/gh/shellscape/loglevelnext
-
 [size]: https://packagephobia.now.sh/badge?p=loglevelnext
 [size-url]: https://packagephobia.now.sh/result?p=loglevelnext
-
 [loglevel]: https://githhub.com/pimterry/loglevel
 [loglevelpre]: https://github.com/kutuluk/loglevel-plugin-prefix
-[methodFactory]: lib/factory/MethodFactory.js
-[prefixFactory]: lib/factory/PrefixFactory.js
+[methodfactory]: lib/factory/MethodFactory.js
+[prefixfactory]: lib/factory/PrefixFactory.js
 
 <div align="center">
   <img width="150" height="150" src="http://shellscape.org/assets/images/external/loglevelnext-icon.svg">
 </div>
-&nbsp;  
+<br/>
 
 [![tests][tests]][tests-url]
 [![cover][cover]][cover-url]
@@ -113,9 +110,9 @@ are available in `loglevelnext`, but in a much more straightforward and structur
 way. `loglevelnext` supports by way of "Factories." A `Factory` is nothing more
 than a class which defines several base methods that operate on the `console`
 and provide functionality to a `LogLevel` instance. All factories must inherit from the
-[`MethodFactory`][methodFactory] class, and may override any defined class functions.
+[`MethodFactory`][methodfactory] class, and may override any defined class functions.
 
-For an example factory, please have a look at the [`PrefixFactory`][prefixFactory]
+For an example factory, please have a look at the [`PrefixFactory`][prefixfactory]
 which provides similar functionality as the [loglevel-prefix](loglevelpre) plugin,
 and is the factory which is used when a user passes the `prefix` option to a
 `LogLevel` instance.
