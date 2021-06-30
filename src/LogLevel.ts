@@ -9,7 +9,7 @@
   included in all copies or substantial portions of this Source Code Form.
 */
 
-import { Factory, FactoryLevels, MethodFactory } from './MethodFactory';
+import { Factory, MethodFactory, UnknownFactoryLevels } from './MethodFactory';
 import { PrefixFactory, PrefixFactoryOptions } from './PrefixFactory';
 
 type SomeLevel = number | string;
@@ -38,7 +38,7 @@ export class LogLevel implements LogLevelIndex {
   public name: string;
 
   public type: string;
-  private currentLevel!: FactoryLevels[keyof FactoryLevels];
+  private currentLevel!: UnknownFactoryLevels[keyof UnknownFactoryLevels];
   private methodFactory: Factory | undefined;
   private options: LogLevelOptions;
 

@@ -15,7 +15,7 @@ interface BindTarget {
   [key: string]: Function;
 }
 
-export interface FactoryLevels extends Record<Uppercase<string>, number> {
+export interface UnknownFactoryLevels extends Record<Uppercase<string>, number> {
   SILENT: number;
 }
 
@@ -25,7 +25,7 @@ export interface Factory {
   distillLevel: (level: number | string) => any;
 
   levelValid: (level: number | string) => boolean;
-  levels: FactoryLevels;
+  levels: UnknownFactoryLevels;
   logger: LogLevel;
   make: (methodName: string) => Function;
   methods?: string[];
@@ -38,7 +38,7 @@ const levels = Symbol('log-levels');
 const instance = Symbol('log-instance');
 
 /* eslint-disable sort-keys */
-export const MethodFactoryLevels: FactoryLevels = {
+const BaseLevels = {
   TRACE: 0,
   DEBUG: 1,
   INFO: 2,
@@ -48,13 +48,15 @@ export const MethodFactoryLevels: FactoryLevels = {
 };
 /* eslint-enable sort-keys */
 
+export type MethodFactoryLevels = Lowercase<keyof typeof BaseLevels>;
+
 export class MethodFactory implements Factory {
   constructor(logger?: LogLevel) {
     (this as any)[instance] = logger;
-    (this as any)[levels] = MethodFactoryLevels;
+    (this as any)[levels] = BaseLevels;
   }
 
-  get levels(): typeof MethodFactoryLevels {
+  get levels(): typeof BaseLevels {
     return (this as any)[levels];
   }
 
@@ -93,8 +95,11 @@ export class MethodFactory implements Factory {
   distillLevel(level: number | string) {
     let result = level;
 
-    if (typeof result === 'string' && typeof this.levels[result.toUpperCase()] !== 'undefined') {
-      result = this.levels[result.toUpperCase()];
+    if (
+      typeof result === 'string' &&
+      typeof (this.levels as UnknownFactoryLevels)[result.toUpperCase()] !== 'undefined'
+    ) {
+      result = (this.levels as UnknownFactoryLevels)[result.toUpperCase()];
     }
 
     if (this.levelValid(result)) {
@@ -146,6 +151,7 @@ export class MethodFactory implements Factory {
     }
 
     this.methods.forEach((methodName) => {
+      // @ts-ignore
       const { [methodName.toUpperCase()]: methodLevel } = this.levels;
 
       this.logger[methodName] = methodLevel < level ? noop : this.make(methodName);
