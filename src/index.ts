@@ -1,5 +1,5 @@
 /*
-  Copyright © 2018 Andrew Powell
+  Copyright © 2021 Andrew Powell
 
   This Source Code Form is subject to the terms of the Mozilla Public
   License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -9,30 +9,37 @@
   included in all copies or substantial portions of this Source Code Form.
 */
 
-const LogLevel = require('./LogLevel');
-const MethodFactory = require('./factory/MethodFactory');
-const PrefixFactory = require('./factory/PrefixFactory');
+import { LogLevel, LogLevelOptions } from './LogLevel';
+import { MethodFactory } from './MethodFactory';
+import { PrefixFactory } from './PrefixFactory';
+
+export * from './LogLevel';
+export * from './MethodFactory';
+export * from './PrefixFactory';
 
 const factories = Symbol('log-factories');
 
 class DefaultLogger extends LogLevel {
+  private cache: Record<string, LogLevel>;
+
   constructor() {
     super({ name: 'default' });
 
     this.cache = { default: this };
-    this[factories] = { MethodFactory, PrefixFactory };
+    // TS can't handle symbols as index types
+    this[factories as any] = { MethodFactory, PrefixFactory };
   }
 
   get factories() {
-    return this[factories];
+    return this[factories as any];
   }
 
   get loggers() {
     return this.cache;
   }
 
-  create(opts) {
-    let options;
+  create(opts: LogLevelOptions | string) {
+    let options: LogLevelOptions;
 
     if (typeof opts === 'string') {
       options = { name: opts };
@@ -41,7 +48,7 @@ class DefaultLogger extends LogLevel {
     }
 
     if (!options.id) {
-      options.id = options.name;
+      options.id = options.name!.toString();
     }
 
     const { name, id } = options;
@@ -60,7 +67,5 @@ class DefaultLogger extends LogLevel {
   }
 }
 
-module.exports = new DefaultLogger();
-
-// TypeScript fix
-module.exports.default = module.exports;
+// eslint-disable-next-line import/no-default-export
+export default new DefaultLogger();

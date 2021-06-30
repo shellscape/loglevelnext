@@ -1,9 +1,9 @@
-const test = require('ava');
+import test from 'ava';
 
-const log = require('../lib');
-const LogLevel = require('../lib/LogLevel');
-const MethodFactory = require('../lib/factory/MethodFactory');
-const PrefixFactory = require('../lib/factory/PrefixFactory');
+import log from '../src';
+import { LogLevel } from '../src/LogLevel';
+import { MethodFactory } from '../src/MethodFactory';
+import { PrefixFactory } from '../src/PrefixFactory';
 
 test('has extended methods', (t) => {
   t.is(typeof log.loggers, 'object');
@@ -38,21 +38,21 @@ test('create() returns the same instance', (t) => {
 });
 
 test('create() returns different instances', (t) => {
-  const child1 = log.create({ name: 'newer', id: +new Date() });
-  const child2 = log.create({ name: 'newer', id: +new Date() + 1 });
+  const child1 = log.create({ id: (+new Date()).toString(), name: 'newer' });
+  const child2 = log.create({ id: (+new Date() + 1).toString(), name: 'newer' });
 
   t.notDeepEqual(child1, child2);
 });
 
 test('create() throws if called with no name / empty name', (t) => {
   t.throws(() => {
-    log.create();
+    (log as any).create();
   });
   t.throws(() => {
     log.create('');
   });
   t.throws(() => {
-    log.create(true);
+    (log as any).create(true);
   });
 });
 
