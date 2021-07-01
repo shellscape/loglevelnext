@@ -101,10 +101,10 @@ export class LogLevel implements LogLevelIndex {
 
     if (typeof console === 'undefined') {
       process.stdout.write('loglevelnext: console is undefined. The log will produce no output.\n');
-    } else if (level < this.levels.SILENT) {
+    } else if (level > this.levels.SILENT) {
       // eslint-disable-next-line no-console
       console.warn(
-        `The log level has been set to a value less than 'silent'. The log will produce no output.`
+        `The log level has been set to a value greater than 'silent'. The log will produce no output.`
       );
     }
   }
