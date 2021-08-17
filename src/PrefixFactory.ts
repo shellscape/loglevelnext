@@ -37,7 +37,7 @@ const defaults: PrefixFactoryOptions = {
 export class PrefixFactory extends MethodFactory {
   private options: PrefixFactoryOptions;
 
-  constructor(logger: LogLevel, options: PrefixFactoryOptions) {
+  constructor(logger?: LogLevel, options?: PrefixFactoryOptions) {
     super(logger);
     this.options = Object.assign({}, defaults, options);
   }
