@@ -18,13 +18,13 @@ test('returns factories', (t) => {
 
 test('returns loggers cache', (t) => {
   t.truthy(log.loggers);
-  t.deepEqual(log.loggers.default, log);
+  t.deepEqual(log.loggers.default, log as any);
 });
 
 test('gets a new logger', (t) => {
   const child = log.create('child');
   t.truthy(child);
-  t.notDeepEqual(child, log);
+  t.notDeepEqual(child, log as any);
   t.truthy(child instanceof LogLevel);
   t.is(typeof child.create, 'undefined');
   t.truthy(log.loggers.child);

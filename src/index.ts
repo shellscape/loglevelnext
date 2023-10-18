@@ -25,7 +25,7 @@ class DefaultLogger extends LogLevel {
   constructor() {
     super({ name: 'default' });
 
-    this.cache = { default: this };
+    this.cache = { default: this as LogLevel };
     // TS can't handle symbols as index types
     this[factories as any] = { MethodFactory, PrefixFactory };
   }

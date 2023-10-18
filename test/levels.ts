@@ -50,7 +50,8 @@ test.serial('can set all levels', (t) => {
 });
 
 for (const name of Object.keys(log.levels)) {
-  const { [name]: level } = log.levels;
+  const levelName: Uppercase<string> = name as any;
+  const { [levelName]: level } = log.levels;
 
   test.serial(`sets level ${name}`, (t) => {
     log.level = name;
@@ -64,7 +65,7 @@ for (const name of Object.keys(log.levels)) {
       // NOTE: the [object Object] + stack output to console is part of the 'trace' test. fret not.
       log[method](chalk.black(`test ${method}`));
 
-      if (level > log.levels[method.toUpperCase()]) {
+      if (level > log.levels[method.toUpperCase() as Uppercase<string>]) {
         expected = 0;
       }
 

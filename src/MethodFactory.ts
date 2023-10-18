@@ -15,17 +15,37 @@ interface BindTarget {
   [key: string]: Function;
 }
 
-export interface UnknownFactoryLevels extends Record<Uppercase<string>, number> {
+export type FactoryLevels = Record<Uppercase<string>, number> & {
+  DEBUG: number;
+  ERROR: number;
+  INFO: number;
   SILENT: number;
-}
+  TRACE: number;
+  WARN: number;
+};
 
-export interface Factory {
+/* eslint-disable sort-keys */
+export const defaultLevels = {
+  TRACE: 0,
+  DEBUG: 1,
+  INFO: 2,
+  WARN: 3,
+  ERROR: 4,
+  SILENT: 5
+} as FactoryLevels;
+/* eslint-enable sort-keys */
+
+const levels = Symbol('log-levels');
+const instance = Symbol('log-instance');
+
+export interface Factory<TLevels extends FactoryLevels = typeof defaultLevels> {
   [key: string]: any;
   bindMethod: (obj: BindTarget, methodName: string) => any;
   distillLevel: (level: number | string) => any;
-
-  levelValid: (level: number | string) => boolean;
-  levels: UnknownFactoryLevels;
+  [instance]: LogLevel | undefined;
+  levelValid: (level: number) => boolean;
+  [levels]: TLevels;
+  levels: TLevels;
   logger: LogLevel;
   make: (methodName: string) => Function;
   methods?: string[];
@@ -34,29 +54,22 @@ export interface Factory {
 }
 
 const noop = () => {};
-const levels = Symbol('log-levels');
-const instance = Symbol('log-instance');
 
-/* eslint-disable sort-keys */
-const BaseLevels = {
-  TRACE: 0,
-  DEBUG: 1,
-  INFO: 2,
-  WARN: 3,
-  ERROR: 4,
-  SILENT: 5
-};
-/* eslint-enable sort-keys */
+export type MethodFactoryLevels = Lowercase<keyof FactoryLevels>;
 
-export type MethodFactoryLevels = Lowercase<keyof typeof BaseLevels>;
+export class MethodFactory<TLevels extends FactoryLevels = typeof defaultLevels>
+  implements Factory<TLevels>
+{
+  public [instance]: LogLevel | undefined;
+  public [levels]: TLevels;
 
-export class MethodFactory implements Factory {
   constructor(logger?: LogLevel) {
-    (this as any)[instance] = logger;
-    (this as any)[levels] = BaseLevels;
+    this[instance] = logger;
+    this[levels] = defaultLevels as any;
   }
 
-  get levels(): typeof BaseLevels {
+  // @ts-ignore
+  get levels(): TLevels {
     return (this as any)[levels];
   }
 
@@ -64,14 +77,14 @@ export class MethodFactory implements Factory {
     return (this as any)[instance];
   }
 
-  set logger(logger: LogLevel) {
-    (this as any)[instance] = logger;
-  }
-
   get methods() {
     return Object.keys(this.levels)
       .map((key) => key.toLowerCase())
       .filter((key) => key !== 'silent');
+  }
+
+  set logger(logger: LogLevel) {
+    (this as any)[instance] = logger;
   }
 
   // eslint-disable-next-line class-methods-use-this
@@ -93,24 +106,23 @@ export class MethodFactory implements Factory {
   }
 
   distillLevel(level: number | string) {
-    let result = level;
+    let value;
 
-    if (
-      typeof result === 'string' &&
-      typeof (this.levels as UnknownFactoryLevels)[result.toUpperCase()] !== 'undefined'
-    ) {
-      result = (this.levels as UnknownFactoryLevels)[result.toUpperCase()];
+    if (typeof level === 'string') {
+      const levels = this.levels;
+      value = levels[level.toUpperCase() as Uppercase<string>];
+    } else {
+      value = level;
     }
 
-    if (this.levelValid(result)) {
-      return result;
-    }
+    if (this.levelValid(value)) return value;
 
     return null;
   }
 
-  levelValid(level: number | string) {
-    if (typeof level === 'number' && level >= 0 && level <= this.levels.SILENT) {
+  levelValid(level: number) {
+    const max = Math.max(...Object.values<number>(this.levels));
+    if (typeof level === 'number' && level >= 0 && level <= max) {
       return true;
     }
 

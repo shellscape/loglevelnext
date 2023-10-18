@@ -6,12 +6,25 @@
   "repository": "shellscape/loglevelnext",
   "author": "Andrew Powell <andrew@shellscape.org>",
   "homepage": "https://github.com/shellscape/loglevelnext",
-  "main": "dist/index.js",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.mjs"
+      },
+      "require": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      }
+    }
+  },
   "engines": {
-    "node": ">= 12.22.1"
+    "node": ">= 18"
   },
   "scripts": {
-    "build": "tsc --project tsconfig.json",
+    "build": "tsup src/index.ts --format esm,cjs --dts",
     "ci:coverage": "nyc pnpm test && nyc report --reporter=text-lcov > coverage.lcov",
     "commitlint": "commitlint",
     "commitmsg": "commitlint -e $GIT_PARAMS",
@@ -21,6 +34,7 @@
     "lint:js": "eslint --fix --cache src test",
     "lint:json": "prettier --write tsconfig.*.json",
     "lint:package": "prettier --write **/package.json --plugin=prettier-plugin-package",
+    "prebuild": "tsc --project tsconfig.json",
     "prepublishOnly": "pnpm build",
     "security": "pnpm audit --audit-level high",
     "test": "FORCE_COLOR=3 ava"
@@ -48,21 +62,23 @@
     "warn"
   ],
   "devDependencies": {
-    "@commitlint/cli": "12.1.4",
-    "@commitlint/config-conventional": "12.1.4",
-    "@types/node": "^15.12.2",
+    "@commitlint/cli": "17.8.0",
+    "@commitlint/config-conventional": "17.8.0",
+    "@types/node": "^20.8.6",
     "@types/sinon": "^10.0.2",
-    "ava": "^3.15.0",
+    "ava": "^5.3.1",
     "chalk": "^4.0.0",
-    "eslint-config-shellscape": "^4.0.1",
-    "husky": "^4.3.8",
-    "lint-staged": "11.0.0",
+    "eslint-config-shellscape": "^6.0.1",
+    "husky": "^8.0.3",
+    "lint-staged": "15.0.1",
     "nyc": "^15.0.1",
     "pre-commit": "^1.2.2",
     "sinon": "11.1.1",
     "ts-node": "^10.0.0",
-    "typescript": "^4.3.2"
+    "tsup": "^7.2.0",
+    "typescript": "^5.2.2"
   },
+  "types": "./dist/index.d.ts",
   "ava": {
     "extensions": [
       "ts"
