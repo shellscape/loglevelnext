@@ -9,7 +9,7 @@
   included in all copies or substantial portions of this Source Code Form.
 */
 
-import { LogLevel } from './LogLevel';
+import { LogLevel } from './LogLevel.js';
 
 interface BindTarget {
   [key: string]: Function;

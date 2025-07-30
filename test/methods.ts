@@ -1,7 +1,7 @@
-import test from 'ava';
+import { describe, it, expect } from 'vitest';
 
-import log from '../src';
-import { LogLevel } from '../src/LogLevel';
+import log from '../dist/index.js';
+import { LogLevel } from '../dist/LogLevel.js';
 
 const levels = Object.keys(log.levels)
   .map((key) => key.toLowerCase())
@@ -10,13 +10,15 @@ const levels = Object.keys(log.levels)
 // console.debug is aliased to console.log
 levels.push('log');
 
-test('exists', (t) => {
-  t.truthy(log);
-  t.true(log instanceof LogLevel);
-});
+describe('Methods', () => {
+  it('exists', () => {
+    expect(log).toBeTruthy();
+    expect(log instanceof LogLevel).toBe(true);
+  });
 
-test('has logging methods', (t) => {
-  for (const level of levels) {
-    t.is(typeof log[level], 'function');
-  }
+  it('has logging methods', () => {
+    for (const level of levels) {
+      expect(typeof log[level]).toBe('function');
+    }
+  });
 });

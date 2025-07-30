@@ -1,8 +1,8 @@
 import chalk from 'chalk';
 import sinon from 'sinon';
-import test from 'ava';
+import { describe, it, expect, beforeAll, afterAll, afterEach } from 'vitest';
 
-import log from '../src';
+import log from '../dist/index.js';
 
 const sandbox = sinon.createSandbox();
 const spyMethods = Object.keys(log.levels)
@@ -15,7 +15,7 @@ interface ConsoleIndex {
 
 const con = console as unknown as ConsoleIndex;
 
-test.before(() => {
+beforeAll(() => {
   for (const method of spyMethods) {
     if (con[method]) {
       // curiously, node 6 doesn't have console.debug
@@ -25,7 +25,7 @@ test.before(() => {
   sandbox.spy(con, 'log');
 });
 
-test.afterEach(() => {
+afterEach(() => {
   for (const method of spyMethods) {
     if (con[method]) {
       (con[method] as sinon.SinonSpy).resetHistory();
@@ -34,73 +34,74 @@ test.afterEach(() => {
   (con.log as sinon.SinonSpy).resetHistory();
 });
 
-test.after(() => {
+afterAll(() => {
   sandbox.restore();
 });
 
-test.serial('can set all levels', (t) => {
-  log.level = log.levels.TRACE;
-  log.level = log.levels.DEBUG;
-  log.level = log.levels.INFO;
-  log.level = log.levels.WARN;
-  log.level = log.levels.ERROR;
-  log.level = log.levels.SILENT;
+describe('LogLevel levels', () => {
+  it('can set all levels', () => {
+    log.level = log.levels.TRACE;
+    log.level = log.levels.DEBUG;
+    log.level = log.levels.INFO;
+    log.level = log.levels.WARN;
+    log.level = log.levels.ERROR;
+    log.level = log.levels.SILENT;
 
-  t.pass();
-});
-
-for (const name of Object.keys(log.levels)) {
-  const levelName: Uppercase<string> = name as any;
-  const { [levelName]: level } = log.levels;
-
-  test.serial(`sets level ${name}`, (t) => {
-    log.level = name;
-    t.is(log.level, level);
+    expect(true).toBe(true);
   });
 
-  test.serial(`logs only levels >= ${name}`, (t) => {
-    for (const method of spyMethods) {
-      let expected = 1;
+  for (const name of Object.keys(log.levels)) {
+    const levelName: Uppercase<string> = name as any;
+    const { [levelName]: level } = log.levels;
 
-      // NOTE: the [object Object] + stack output to console is part of the 'trace' test. fret not.
-      log[method](chalk.black(`test ${method}`));
+    it(`sets level ${name}`, () => {
+      log.level = name;
+      expect(log.level).toBe(level);
+    });
 
-      if (level > log.levels[method.toUpperCase() as Uppercase<string>]) {
-        expected = 0;
+    it(`logs only levels >= ${name}`, () => {
+      for (const method of spyMethods) {
+        let expected = 1;
+
+        // NOTE: the [object Object] + stack output to console is part of the 'trace' test. fret not.
+        log[method](chalk.black(`test ${method}`));
+
+        if (level > log.levels[method.toUpperCase() as Uppercase<string>]) {
+          expected = 0;
+        }
+
+        if (method === 'error' && name === 'TRACE' && expected === 1) {
+          expected = 2;
+        }
+
+        expect((con[method] as sinon.SinonSpy).callCount).toBe(expected);
       }
+    });
+  }
 
-      // This was true for earlier node versions
-      // if (method === 'error' && name === 'TRACE' && expected === 1) {
-      //   expected = 2;
-      // }
-
-      t.is((con[method] as sinon.SinonSpy).callCount, expected);
-    }
+  it('disable() sets SILENT', () => {
+    log.disable();
+    expect(log.level).toBe(log.levels.SILENT);
   });
-}
 
-test.serial('disable() sets SILENT', (t) => {
-  log.disable();
-  t.is(log.level, log.levels.SILENT);
-});
+  it('enable() sets TRACE', () => {
+    log.enable();
+    expect(log.level).toBe(log.levels.TRACE);
+  });
 
-test.serial('enable() sets TRACE', (t) => {
-  log.enable();
-  t.is(log.level, log.levels.TRACE);
-});
-
-test.serial('throws on invalid levels', (t) => {
-  t.throws(() => {
-    (log as any).level = null;
-  });
-  t.throws(() => {
-    // eslint-disable-next-line no-undefined
-    (log as any).level = undefined;
-  });
-  t.throws(() => {
-    log.level = -1;
-  });
-  t.throws(() => {
-    log.level = 'foo';
+  it('throws on invalid levels', () => {
+    expect(() => {
+      (log as any).level = null;
+    }).toThrow();
+    expect(() => {
+      // eslint-disable-next-line no-undefined
+      (log as any).level = undefined;
+    }).toThrow();
+    expect(() => {
+      log.level = -1;
+    }).toThrow();
+    expect(() => {
+      log.level = 'foo';
+    }).toThrow();
   });
 });
