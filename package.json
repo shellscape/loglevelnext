@@ -25,7 +25,7 @@
     "lint": "pnpm lint:docs && pnpm lint:json && pnpm lint:package && pnpm lint:js",
     "lint-staged": "lint-staged",
     "lint:docs": "prettier --write .github/**/*.md **/README.md",
-    "lint:js": "eslint --fix --cache src test",
+    "lint:js": "oxlint --format stylish src test",
     "lint:json": "prettier --write tsconfig.*.json",
     "lint:package": "prettier --write **/package.json --plugin=prettier-plugin-package",
     "prepublishOnly": "pnpm build",
@@ -54,20 +54,19 @@
     "trace",
     "warn"
   ],
-  "dependencies": {
-    "tsx": "^4.20.3"
-  },
   "devDependencies": {
     "@commitlint/cli": "19.8.1",
     "@commitlint/config-conventional": "19.8.1",
+    "@ianvs/prettier-plugin-sort-imports": "^4.5.1",
     "@types/node": "^24.1.0",
     "@types/sinon": "^17.0.4",
     "chalk": "^5.4.1",
-    "eslint-config-shellscape": "^6.0.1",
     "husky": "^9.1.7",
     "lint-staged": "16.1.2",
+    "oxlint": "^0.16.3",
     "pre-commit": "^1.2.2",
     "sinon": "21.0.0",
+    "tsx": "^4.20.3",
     "typescript": "^5.2.2",
     "vitest": "^2.1.4"
   },
@@ -79,7 +78,7 @@
   },
   "lint-staged": {
     "*.{ts,js}": [
-      "eslint --fix"
+      "oxlint --format stylish src test"
     ],
     "*.{json,md,yml,yaml}": [
       "prettier --write"

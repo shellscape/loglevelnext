@@ -37,7 +37,7 @@ npm install loglevelnext --save
 Users can choose to use `loglevelnext` in Node.js or in the client (browser).
 
 ```js
-const log = require('loglevelnext');
+import log from 'loglevelnext';
 
 log.info('bananas!');
 ```
@@ -48,14 +48,14 @@ By default `loglevelnext` ships supporting the following log level name-value
 pairs:
 
 ```js
-{
+const levels = {
   TRACE: 0,
   DEBUG: 1,
   INFO: 2,
   WARN: 3,
   ERROR: 4,
   SILENT: 5
-}
+};
 ```
 
 ## Default Logger
@@ -72,7 +72,7 @@ These methods correspond to the available log levels and accept parameters ident
 
 ```js
 console.info('...');
-console.info('...');
+console.debug('...');
 // ... etc
 ```
 
@@ -86,20 +86,23 @@ _Note: `LogLevel` instances created are cached. Calling `create` with a previous
 
 #### `factories`
 
-Type: `Array [ Class ]`
+Type: `Class[]`
 
 Returns an `Array` containing the factory classes available within `loglevelnext`
 to outside modules. Particularly useful when creating plugins. eg.
 
 ```js
-const log = require('loglevelnext');
+import log from 'loglevelnext';
+
 const { MethodFactory } = log.factories;
-class MyFactory extends MethodFactory { ... }
+class MyFactory extends MethodFactory {
+  // ...
+}
 ```
 
 #### `loggers`
 
-Type: `Array [ LogLevel ]`
+Type: `LogLevel[]`
 
 Returns an `Array` containing references to the currently instantiated loggers.
 
