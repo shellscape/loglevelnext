@@ -9,13 +9,13 @@
   included in all copies or substantial portions of this Source Code Form.
 */
 
-import { LogLevel, LogLevelOptions } from './LogLevel';
-import { MethodFactory } from './MethodFactory';
-import { PrefixFactory } from './PrefixFactory';
+import { LogLevel, LogLevelOptions } from './LogLevel.js';
+import { MethodFactory } from './MethodFactory.js';
+import { PrefixFactory } from './PrefixFactory.js';
 
-export * from './LogLevel';
-export * from './MethodFactory';
-export * from './PrefixFactory';
+export * from './LogLevel.js';
+export * from './MethodFactory.js';
+export * from './PrefixFactory.js';
 
 const factories = Symbol('log-factories');
 

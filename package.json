@@ -6,38 +6,31 @@
   "repository": "shellscape/loglevelnext",
   "author": "Andrew Powell <andrew@shellscape.org>",
   "homepage": "https://github.com/shellscape/loglevelnext",
-  "main": "./dist/index.js",
   "module": "./dist/index.mjs",
+  "type": "module",
   "exports": {
     ".": {
-      "import": {
-        "types": "./dist/index.d.ts",
-        "default": "./dist/index.mjs"
-      },
-      "require": {
-        "types": "./dist/index.d.ts",
-        "default": "./dist/index.js"
-      }
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.mjs"
     }
   },
   "engines": {
-    "node": ">= 18"
+    "node": ">= 20.19.0"
   },
   "scripts": {
-    "build": "tsup src/index.ts --format esm,cjs --dts",
-    "ci:coverage": "nyc pnpm test && nyc report --reporter=text-lcov > coverage.lcov",
+    "build": "tsc --project tsconfig.json --noEmit false",
+    "ci:coverage": "vitest run --coverage && vitest coverage report --reporter=lcov",
     "commitlint": "commitlint",
     "commitmsg": "commitlint -e $GIT_PARAMS",
     "lint": "pnpm lint:docs && pnpm lint:json && pnpm lint:package && pnpm lint:js",
     "lint-staged": "lint-staged",
     "lint:docs": "prettier --write .github/**/*.md **/README.md",
-    "lint:js": "eslint --fix --cache src test",
+    "lint:js": "oxlint --format stylish src test",
     "lint:json": "prettier --write tsconfig.*.json",
     "lint:package": "prettier --write **/package.json --plugin=prettier-plugin-package",
-    "prebuild": "tsc --project tsconfig.json",
     "prepublishOnly": "pnpm build",
     "security": "pnpm audit --audit-level high",
-    "test": "FORCE_COLOR=3 ava"
+    "test": "vitest run"
   },
   "files": [
     "dist",
@@ -62,34 +55,22 @@
     "warn"
   ],
   "devDependencies": {
-    "@commitlint/cli": "17.8.0",
-    "@commitlint/config-conventional": "17.8.0",
-    "@types/node": "^20.8.6",
-    "@types/sinon": "^10.0.2",
-    "ava": "^5.3.1",
-    "chalk": "^4.0.0",
-    "eslint-config-shellscape": "^6.0.1",
-    "husky": "^8.0.3",
-    "lint-staged": "15.0.1",
-    "nyc": "^15.0.1",
+    "@commitlint/cli": "19.8.1",
+    "@commitlint/config-conventional": "19.8.1",
+    "@ianvs/prettier-plugin-sort-imports": "^4.5.1",
+    "@types/node": "^24.1.0",
+    "@types/sinon": "^17.0.4",
+    "chalk": "^5.4.1",
+    "husky": "^9.1.7",
+    "lint-staged": "16.1.2",
+    "oxlint": "^0.16.3",
     "pre-commit": "^1.2.2",
-    "sinon": "11.1.1",
-    "ts-node": "^10.0.0",
-    "tsup": "^7.2.0",
-    "typescript": "^5.2.2"
+    "sinon": "21.0.0",
+    "tsx": "^4.20.3",
+    "typescript": "^5.2.2",
+    "vitest": "^2.1.4"
   },
   "types": "./dist/index.d.ts",
-  "ava": {
-    "extensions": [
-      "ts"
-    ],
-    "require": [
-      "ts-node/register"
-    ],
-    "files": [
-      "test/*.ts"
-    ]
-  },
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged"
@@ -97,7 +78,7 @@
   },
   "lint-staged": {
     "*.{ts,js}": [
-      "eslint --fix"
+      "oxlint --format stylish src test"
     ],
     "*.{json,md,yml,yaml}": [
       "prettier --write"

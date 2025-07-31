@@ -1,9 +1,9 @@
-import test from 'ava';
+import { describe, it, expect, beforeAll, afterAll, afterEach } from 'vitest';
 import sinon from 'sinon';
 
-import { LogLevel } from '../src/LogLevel';
-import { Factory } from '../src/MethodFactory';
-import { PrefixFactory } from '../src/PrefixFactory';
+import { LogLevel } from '../dist/LogLevel.js';
+import { Factory } from '../dist/MethodFactory.js';
+import { PrefixFactory } from '../dist/PrefixFactory.js';
 
 const sandbox = sinon.createSandbox();
 
@@ -11,81 +11,83 @@ let log: LogLevel;
 let factory: Factory;
 let spy: sinon.SinonSpy;
 
-test.before(() => {
+beforeAll(() => {
   spy = sandbox.spy(console, 'info');
   log = new LogLevel({
     level: 'trace',
     name: 'test',
     prefix: {}
   });
-    factory = log.factory; // eslint-disable-line
+  factory = log.factory; // eslint-disable-line
 });
 
-test.afterEach(() => {
+afterEach(() => {
   spy.resetHistory();
 });
 
-test.after(() => {
+afterAll(() => {
   sandbox.restore();
 });
 
-test.serial('created a PrefixFactory', (t) => {
-  t.truthy(factory instanceof PrefixFactory);
-});
-
-test.serial('gets the name from the base logger', (t) => {
-  t.is(factory.options.name({ logger: log }), 'test');
-});
-
-test.serial('prefixes output', (t) => {
-  log.info('foo');
-
-  const [first] = spy.firstCall.args;
-
-  t.is(spy.callCount, 1);
-  t.truthy(/\d{2}:\d{2}:\d{2}\s\[info\]\sfoo/.test(first));
-});
-
-test.serial('prefixes output with custom options', (t) => {
-  const options = {
-    level: (opts: any) => `[${opts.level.substring(1)}]`,
-    name: (opts: any) => opts.logger.name.toUpperCase(),
-    template: '{{time}} {{level}} ({{name}}) {{nope}}-',
-    time: () => `[${new Date().toTimeString().split(' ')[0].split(':')[0]}]`
-  };
-  const customPrefix = new PrefixFactory(log, options);
-
-  log.factory = customPrefix;
-  log.info('foo');
-
-  const [first] = spy.firstCall.args;
-  const terped = customPrefix.interpolate('info');
-  const rOutput = /\[\d{2}\]\s\[nfo\]\s\(TEST\)\s\{\{nope\}\}-/;
-
-  t.truthy(rOutput.test(terped));
-  t.is(spy.callCount, 1);
-  t.truthy(/\[\d{2}\]\s\[nfo\]\s\(TEST\)\s\{\{nope\}\}-foo/.test(first));
-
-  // test the first argument when passing a non-string
-  log.info({});
-
-  const [last] = spy.lastCall.args;
-  t.truthy(rOutput.test(last));
-});
-
-test.serial('supports different prefixes per logger', (t) => {
-  const log2 = new LogLevel({
-    level: 'trace',
-    name: 'test',
-    prefix: { template: 'baz ' }
+describe('PrefixFactory', () => {
+  it('created a PrefixFactory', () => {
+    expect(factory instanceof PrefixFactory).toBeTruthy();
   });
 
-  log.info('foo');
-  log2.info('foo');
+  it('gets the name from the base logger', () => {
+    expect(factory.options.name({ logger: log })).toBe('test');
+  });
 
-  const [first] = spy.firstCall.args;
-  const [last] = spy.lastCall.args;
+  it('prefixes output', () => {
+    log.info('foo');
 
-  t.is(spy.callCount, 2);
-  t.not(first, last);
+    const [first] = spy.firstCall.args;
+
+    expect(spy.callCount).toBe(1);
+    expect(/\d{2}:\d{2}:\d{2}\s\[info\]\sfoo/.test(first)).toBeTruthy();
+  });
+
+  it('prefixes output with custom options', () => {
+    const options = {
+      level: (opts: any) => `[${opts.level.substring(1)}]`,
+      name: (opts: any) => opts.logger.name.toUpperCase(),
+      template: '{{time}} {{level}} ({{name}}) {{nope}}-',
+      time: () => `[${new Date().toTimeString().split(' ')[0].split(':')[0]}]`
+    };
+    const customPrefix = new PrefixFactory(log, options);
+
+    log.factory = customPrefix;
+    log.info('foo');
+
+    const [first] = spy.firstCall.args;
+    const terped = customPrefix.interpolate('info');
+    const rOutput = /\[\d{2}\]\s\[nfo\]\s\(TEST\)\s\{\{nope\}\}-/;
+
+    expect(rOutput.test(terped)).toBeTruthy();
+    expect(spy.callCount).toBe(1);
+    expect(/\[\d{2}\]\s\[nfo\]\s\(TEST\)\s\{\{nope\}\}-foo/.test(first)).toBeTruthy();
+
+    // test the first argument when passing a non-string
+    log.info({});
+
+    const [last] = spy.lastCall.args;
+    expect(rOutput.test(last)).toBeTruthy();
+  });
+
+  it('supports different prefixes per logger', () => {
+    const log2 = new LogLevel({
+      level: 'trace',
+      name: 'test',
+      prefix: { template: 'baz ' }
+    });
+
+    log.info('foo');
+    log2.info('foo');
+
+    const [first] = spy.firstCall.args;
+    const [last] = spy.lastCall.args;
+
+    expect(spy.callCount).toBe(2);
+    expect(first).not.toBe(last);
+  });
 });

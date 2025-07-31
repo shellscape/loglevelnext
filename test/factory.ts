@@ -1,8 +1,8 @@
-import test from 'ava';
-import sinon from 'sinon';
+import { describe, it, expect, beforeAll, afterAll } from 'vitest';
+import * as sinon from 'sinon';
 
-import { LogLevel } from '../src/LogLevel';
-import { MethodFactory } from '../src/MethodFactory';
+import { LogLevel } from '../dist/LogLevel.js';
+import { MethodFactory } from '../dist/MethodFactory.js';
 
 /* eslint-disable sort-keys */
 const levels = {
@@ -22,81 +22,83 @@ const sandbox = sinon.createSandbox();
 let log: LogLevel;
 let spy: sinon.SinonSpy;
 
-test.before(() => {
+beforeAll(() => {
   spy = sandbox.spy(factory, 'make');
 });
 
-test.after(() => {
+afterAll(() => {
   sandbox.restore();
 });
 
-test.serial('gets levels', (t) => {
-  t.deepEqual(factory.levels, levels);
-});
-
-test.serial('gets methods', (t) => {
-  t.deepEqual(factory.methods, methods);
-});
-
-test.serial('throws on replaceMethods() with invalid level', (t) => {
-  t.throws(() => {
-    factory.replaceMethods(null as any);
+describe('MethodFactory', () => {
+  it('gets levels', () => {
+    expect(factory.levels).toEqual(levels);
   });
-});
 
-test.serial('throws on replaceMethods() with no logger defined', (t) => {
-  t.throws(() => {
-    factory.replaceMethods(0);
+  it('gets methods', () => {
+    expect(factory.methods).toEqual(methods);
   });
-});
 
-test.serial('equals the log factory', (t) => {
-  log = new LogLevel({
-    factory,
-    level: 'trace',
-    name: 'test'
+  it('throws on replaceMethods() with invalid level', () => {
+    expect(() => {
+      factory.replaceMethods(null as any);
+    }).toThrow();
   });
-  t.deepEqual(log.factory, factory);
-});
 
-test.serial('calls make() for each method', (t) => {
-  t.is(spy.callCount, factory.methods.length);
+  it('throws on replaceMethods() with no logger defined', () => {
+    expect(() => {
+      factory.replaceMethods(0);
+    }).toThrow();
+  });
 
-  const calls = spy.getCalls();
+  it('equals the log factory', () => {
+    log = new LogLevel({
+      factory,
+      level: 'trace',
+      name: 'test'
+    });
+    expect(log.factory).toEqual(factory);
+  });
 
-  for (const [index, method] of factory.methods.entries()) {
-    t.is(calls[index].args[0], method);
-  }
+  it('calls make() for each method', () => {
+    expect(spy.callCount).toBe(factory.methods.length);
 
-  spy.resetHistory();
-});
+    const calls = spy.getCalls();
 
-test.serial('calls make() for appropriate levels', (t) => {
-  log.level = 'info';
+    for (const [index, method] of factory.methods.entries()) {
+      expect(calls[index].args[0]).toBe(method);
+    }
 
-  t.is(spy.callCount, factory.levels.INFO + 1);
+    spy.resetHistory();
+  });
 
-  const calls = spy.getCalls();
-  const checkMethods = factory.methods.slice(factory.levels.INFO);
+  it('calls make() for appropriate levels', () => {
+    log.level = 'info';
 
-  for (const [index, method] of checkMethods.entries()) {
-    t.is(calls[index].args[0], method);
-  }
-});
+    expect(spy.callCount).toBe(factory.levels.INFO + 1);
 
-test.serial('sets the factory and calls make()', (t) => {
-  const newFactory = new MethodFactory(log);
+    const calls = spy.getCalls();
+    const checkMethods = factory.methods.slice(factory.levels.INFO);
 
-  const newSpy = sandbox.spy(newFactory, 'make');
-  log.factory = newFactory;
+    for (const [index, method] of checkMethods.entries()) {
+      expect(calls[index].args[0]).toBe(method);
+    }
+  });
 
-  t.deepEqual(log.factory, newFactory);
-  t.is(newSpy.callCount, factory.levels.INFO + 1);
+  it('sets the factory and calls make()', () => {
+    const newFactory = new MethodFactory(log);
 
-  const calls = spy.getCalls();
-  const checkMethods = factory.methods.slice(factory.levels.INFO);
+    const newSpy = sandbox.spy(newFactory, 'make');
+    log.factory = newFactory;
 
-  for (const [index, method] of checkMethods.entries()) {
-    t.is(calls[index].args[0], method);
-  }
+    expect(log.factory).toEqual(newFactory);
+    expect(newSpy.callCount).toBe(factory.levels.INFO + 1);
+
+    const calls = spy.getCalls();
+    const checkMethods = factory.methods.slice(factory.levels.INFO);
+
+    for (const [index, method] of checkMethods.entries()) {
+      expect(calls[index].args[0]).toBe(method);
+    }
+  });
 });

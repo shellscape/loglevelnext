@@ -9,8 +9,8 @@
   included in all copies or substantial portions of this Source Code Form.
 */
 
-import { LogLevel } from './LogLevel';
-import { MethodFactory } from './MethodFactory';
+import { LogLevel } from './LogLevel.js';
+import { MethodFactory } from './MethodFactory.js';
 
 export interface PrefixTemplateOptions {
   level: string;

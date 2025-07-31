@@ -9,8 +9,8 @@
   included in all copies or substantial portions of this Source Code Form.
 */
 
-import { defaultLevels, Factory, MethodFactory, type FactoryLevels } from './MethodFactory';
-import { PrefixFactory, PrefixFactoryOptions } from './PrefixFactory';
+import { defaultLevels, Factory, MethodFactory, type FactoryLevels } from './MethodFactory.js';
+import { PrefixFactory, PrefixFactoryOptions } from './PrefixFactory.js';
 
 type SomeLevel = number | string;
 
